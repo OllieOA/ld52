@@ -8,6 +8,22 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Button",
+"class": "ClickingButton",
+"language": "GDScript",
+"path": "res://utils/click_button.gd"
+}, {
+"base": "Panel",
+"class": "Minigame",
+"language": "GDScript",
+"path": "res://minigames/base_minigame.gd"
+} ]
+_global_script_class_icons={
+"ClickingButton": "",
+"Minigame": ""
+}
+
 [application]
 
 config/name="LD52"
