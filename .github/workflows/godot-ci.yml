@@ -6,15 +6,15 @@ on:
   workflow_dispatch:
 
 env:
-  EXPORT_NAME: slingshot
-  GODOT_VERSION: 3.5
+  EXPORT_NAME: ld52-test
+  GODOT_VERSION: 3.5.1
 
 jobs:
   export-web:
     name: Web Export
     runs-on: ubuntu-latest
     container:
-      image: barichello/godot-ci:3.5
+      image: barichello/godot-ci:3.5.1
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -42,7 +42,7 @@ jobs:
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
           CHANNEL: web
-          ITCH_GAME: GAMENAME # INSERT GAME NAME HERE
+          ITCH_GAME: ld52-test # INSERT GAME NAME HERE
           ITCH_USER: ollieoa
           PACKAGE: build/web
   
