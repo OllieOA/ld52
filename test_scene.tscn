@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://test_scene.gd" type="Script" id=1]
+[ext_resource path="res://ding.cs" type="Script" id=2]
 
 [node name="test_scene" type="Control"]
 script = ExtResource( 1 )
@@ -22,3 +23,15 @@ margin_right = 830.0
 margin_bottom = 259.0
 text = " I thought not. It’s not a story the Jedi would tell you. It’s a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life… He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful… the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. Ironic. He could save others from death, but not himself."
 autowrap = true
+
+[node name="ding" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = 71.0
+margin_top = 46.0
+margin_right = 110.0
+margin_bottom = 66.0
+text = "ding"
+script = ExtResource( 2 )
