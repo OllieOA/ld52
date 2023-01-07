@@ -48,6 +48,7 @@ boot_splash/image="res://ui/gremlindevelopment_splash_screen.png"
 AudioManager="*res://globals/audio_manager.tscn"
 SignalBus="*res://globals/signal_bus.gd"
 GameControl="*res://globals/game_control.tscn"
+Randy="*res://globals/Randy.cs"
 
 [display]
 
@@ -78,6 +79,14 @@ texture={
 "size_limit": 0,
 "stream": false,
 "svg/scale": 1.0
+}
+
+[input]
+
+debug_refresh={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":true,"meta":false,"command":true,"pressed":false,"scancode":82,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
 }
 
 [mono]
