@@ -10,3 +10,5 @@ export.cfg
 # Mono-specific ignores
 .mono/
 data_*/
+
+word_tool/ld52
