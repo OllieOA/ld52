@@ -10,12 +10,12 @@ enum MinigameType {
 	HACK,
 	CAPITALS,
 	HANGMAN,
-	COUNTDOWN,
+	COUNTDOWN,  # doesn't match the feel
 	ALPHABET,
 	NUMBERS,
 	LONGEST,
 	SHORTEST,
-	SPELLING
+	SPELLING  # on fence
 }
 
 # Some colours - TODO: Yuri to tweak
