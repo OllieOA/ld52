@@ -17,7 +17,6 @@ public class SiteNetwork : Node2D
     [Export] public PackedScene SiteNodeScene;
     [Signal] public delegate void Arrived(bool visited, string[] addresses);
     [Signal] public delegate void Goto(string address);
-    [Signal] public delegate void Back();
     [Signal] public delegate void VisitSite(int id);
     [Signal] public delegate void Arrival(int id);
 
