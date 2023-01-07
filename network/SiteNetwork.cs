@@ -2,14 +2,28 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+// Signals
+// Emitted
+// Arrived(bool visited, string[] urls)
+
+// // Listens to
+// Goto(string url)
+// Back()
+
 public class SiteNetwork : Node2D
 {
     [Export] public int MaxDepth = 10;
     [Export] public int MaxWidth = 4;
     [Export] public PackedScene SiteNodeScene;
+    [Signal] public delegate void Arrived(bool visited, string[] addresses);
+    [Signal] public delegate void Goto(string address);
+    [Signal] public delegate void Back();
+    [Signal] public delegate void VisitSite(int id);
+    [Signal] public delegate void Arrival(int id);
 
     public List<NetworkLayer> Layers;
     public Dictionary<int, SiteNode> SiteNodes;
+    public SiteData CurrentSite;
 
     public override void _Ready()
     {
@@ -17,6 +31,9 @@ public class SiteNetwork : Node2D
         SiteNodes = new Dictionary<int, SiteNode>();
 
         Generate();
+
+        Connect("Goto", this, "OnGoto");
+        Connect("Arrival", this, "OnArrival");
     }
 
     public void Generate()
@@ -24,6 +41,8 @@ public class SiteNetwork : Node2D
         for (int i = 0; i < MaxDepth; i++)
         {
             int count = Randy.Range(2, MaxWidth);
+            if (i == 0)
+                count = 1;
             Layers.Add(new NetworkLayer(i, this).Generate(count));
         }
 
@@ -39,6 +58,9 @@ public class SiteNetwork : Node2D
         }
 
         InstantiateNetwork();
+
+
+        OnArrival(Layers[0].Sites[0].Id); // won't work for second time around
     }
 
     public void Regenerate()
@@ -70,6 +92,26 @@ public class SiteNetwork : Node2D
         }
     }
 
+    public void OnGoto(string address)
+    {
+        SiteData site = CurrentSite.FindFromAddress(address);
+
+        if (site != null)
+        {
+            EmitSignal("VisitSite", site.Id);
+            CurrentSite.Deactivate();
+        }
+    }
+
+    public void OnArrival(int id)
+    {
+
+        CurrentSite = SiteNodes[id].Data;
+        bool visited = CurrentSite.IsVisited;
+        CurrentSite.Activate();
+        EmitSignal("Arrived", visited, CurrentSite.AvailableAddresses());
+    }
+
     public override void _Process(float delta)
     {
         if (Input.IsActionJustPressed("debug_refresh"))
@@ -86,7 +128,6 @@ public class SiteNetwork : Node2D
             {
                 if (site.Data.LayerId <= otherData.LayerId)
                 {
-
                     Vector2 from = site.CalculatePosition();
                     Vector2 to = SiteNodes[otherData.Id].CalculatePosition();
 
@@ -118,10 +159,6 @@ public class NetworkLayer
         if (Id > 0)
         {
             CalculateMainPath();
-        }
-        else
-        {
-            CalculateHorizontalPath();
         }
 
         return this;
