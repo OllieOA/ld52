@@ -19,7 +19,11 @@ public class SiteNode : Node2D
     public override void _Process(float delta)
     {
         Position = CalculatePosition();
-        Update();
+
+        if (_data.IsActive)
+            Modulate = Colors.Cyan;
+        else
+            Modulate = Colors.White;
     }
 
     public Vector2 CalculatePosition()
@@ -35,12 +39,3 @@ public class SiteNode : Node2D
         GetNode<Label>("Label").Text = "" + Data.Id;
     }
 }
-
-
-// Signals
-// Emitted
-// Arrived(bool visited, string[] urls)
-
-// // Listens to
-// Goto(string url)
-// Back()
