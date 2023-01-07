@@ -1,10 +1,160 @@
 import json
+import re
 
-MIN_LEN = 4
-MAX_LEN = 7
+MIN_LEN = 5
+MAX_LEN = 8
 
-SKIP_FIRST = 500
-TARGET_LEN = 2000
+SKIP_FIRST = 300
+TARGET_LEN = 1000
+
+WORD_BLACKLIST = [
+    "ought",
+    "ebook",
+    "nicht",
+    "comme",
+    "avait",
+    "literary",
+    "cette",
+    "madame",
+    "etext",
+    "scarcely",
+    "faire",
+    "xpage",
+    "monsieur",
+    "etait",
+    "einen",
+    "aussi",
+    "ascii",
+    "votre",
+    "napoleon",
+    "homme",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "william",
+    "richard",
+    "toute",
+    "israel",
+    "latin",
+    "arthur",
+    "ireland",
+    "france",
+    "virginia",
+    "first",
+    "second",
+    "third",
+    "fourth",
+    "fifth",
+    "sixth",
+    "seventh",
+    "eighth",
+    "ninth",
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
+    "english",
+    "mary",
+    "spain",
+    "fifteen",
+    "french",
+    "breast",
+    "italy",
+    "italian",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+    "germany",
+    "edward",
+    "irish",
+    "christ",
+    "roman",
+    "greek",
+    "india",
+    "america",
+    "quand",
+    "chiefly",
+    "spanish",
+    "harry",
+    "smith",
+    "joseph",
+    "david",
+    "arthur",
+    "helen",
+    "russia",
+    "avoir",
+    "femme",
+    "notre",
+    "bible",
+    "werden",
+    "eleven",
+    "seine",
+    "england",
+    "american",
+    "twenty",
+    "george",
+    "yourself",
+    "where",
+    "what",
+    "while",
+    "when",
+    "johnson",
+    "britain",
+    "german",
+    "british",
+    "there",
+    "their",
+    "henry",
+    "indian",
+    "fifty",
+    "selbst",
+    "native",
+    "twelve",
+    "michael",
+    "europe",
+    "jeune",
+    "thirty",
+    "those",
+    "robert",
+    "phillip",
+    "forty",
+    "slave",
+    "somehow",
+    "durch",
+    "european",
+    "hette",
+    "einen",
+    "thence",
+    "hitherto",
+    "egypt",
+    "thine",
+    "catholic",
+    "chinese",
+    "russian",
+    "bosom",
+    "quelque",
+    "dutch",
+    "grande",
+]
 
 
 def main() -> None:
@@ -14,23 +164,43 @@ def main() -> None:
         words = []
         for x in f.readlines():
             try:
-                words.append(x.strip())
+                words.append(x.strip().lower())
             except UnicodeDecodeError:
                 continue
 
     target_words = []
 
+    next_word = False
+
     for idx, word in enumerate(words):
+        if idx == 386:
+            print(word)
         if idx < SKIP_FIRST:
             continue
         if word.startswith("#"):
             continue
+        if (
+            word.endswith("s") or word.endswith("ing") or word.endswith("ed")
+        ):  # No plurals on doings
+            continue
+        if word.lower() in WORD_BLACKLIST:
+            continue
         if len(word) > MAX_LEN or len(word) < MIN_LEN:
             continue
-        if not all([x.isalpha() for x in word]):
+        if not all([re.match(r"[a-z]", x) for x in word.lower()]):
+            continue
+        if "\\u" in word:
+            continue
+        if word.lower() in target_words:
             continue
 
         target_words.append(word.lower())
+        if next_word:
+            print(word)
+            next_word = False
+
+        if word.lower() == "proved":
+            next_word = True
 
         if len(target_words) > TARGET_LEN:
             break

@@ -9,19 +9,31 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "BaseMinigame",
+"class": "Anagram",
+"language": "GDScript",
+"path": "res://minigames/anagram.gd"
+}, {
+"base": "Panel",
+"class": "BaseMinigame",
+"language": "GDScript",
+"path": "res://minigames/base_minigame.gd"
+}, {
 "base": "Button",
 "class": "ClickingButton",
 "language": "GDScript",
 "path": "res://utils/click_button.gd"
 }, {
-"base": "Panel",
-"class": "Minigame",
+"base": "Resource",
+"class": "WordList",
 "language": "GDScript",
-"path": "res://minigames/base_minigame.gd"
+"path": "res://minigames/word_list.gd"
 } ]
 _global_script_class_icons={
+"Anagram": "",
+"BaseMinigame": "",
 "ClickingButton": "",
-"Minigame": ""
+"WordList": ""
 }
 
 [application]
