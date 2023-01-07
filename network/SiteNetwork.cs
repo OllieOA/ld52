@@ -6,43 +6,204 @@ public class SiteNetwork : Node2D
 {
     [Export] public int MaxDepth = 10;
     [Export] public int MaxWidth = 4;
+    [Export] public PackedScene SiteNodeScene;
 
-    private List<NetworkLayer> _layers;
-    private RandomNumberGenerator _rng;
+    public List<NetworkLayer> Layers;
+    public Dictionary<int, SiteNode> SiteNodes;
 
     public override void _Ready()
     {
-        _layers = new List<NetworkLayer>();
-        _rng = new RandomNumberGenerator();
-        _rng.Randomize();
+        Layers = new List<NetworkLayer>();
+        SiteNodes = new Dictionary<int, SiteNode>();
 
+        Generate();
+    }
+
+    public void Generate()
+    {
         for (int i = 0; i < MaxDepth; i++)
         {
-            _layers.Add(CreateNetworkLayer());
+            int count = Randy.Range(2, MaxWidth);
+            Layers.Add(new NetworkLayer(i, this).Generate(count));
+        }
+
+        for (int i = 1; i < Layers.Count; i++)
+        {
+            Layers[i].CalculateRandomPath();
+            Layers[i].CalculateRandomPath();
+        }
+
+        for (int i = 1; i < Layers.Count; i++)
+        {
+            Layers[i].CalculateDisconnectedPaths();
+        }
+
+        InstantiateNetwork();
+    }
+
+    public void Regenerate()
+    {
+        foreach (SiteNode node in SiteNodes.Values)
+        {
+            node.QueueFree();
+        }
+
+        Layers = new List<NetworkLayer>();
+        SiteNodes = new Dictionary<int, SiteNode>();
+
+        GD.Print("===== Regenerating =====");
+        Generate();
+        Update();
+    }
+
+    public void InstantiateNetwork()
+    {
+        foreach (NetworkLayer layer in Layers)
+        {
+            foreach (SiteData siteData in layer.Sites)
+            {
+                SiteNode node = SiteNodeScene.Instance<SiteNode>();
+                AddChild(node);
+                node.Assign(siteData);
+                SiteNodes.Add(siteData.Id, node);
+            }
         }
     }
 
-    public NetworkLayer CreateNetworkLayer()
+    public override void _Process(float delta)
     {
-        int count = _rng.RandiRange(1, MaxWidth);
-        return new NetworkLayer().Generate(count);
+        if (Input.IsActionJustPressed("debug_refresh"))
+        {
+            Regenerate();
+        }
     }
 
+    public override void _Draw()
+    {
+        foreach (SiteNode site in SiteNodes.Values)
+        {
+            foreach (SiteData otherData in site.Data.Neighbours)
+            {
+                if (site.Data.LayerId <= otherData.LayerId)
+                {
 
+                    Vector2 from = site.CalculatePosition();
+                    Vector2 to = SiteNodes[otherData.Id].CalculatePosition();
+
+                    DrawLine(from, to, Colors.White, 3);
+                }
+            }
+        }
+    }
 }
 
 public class NetworkLayer
 {
     public SiteData[] Sites;
+    private int _layerId;
+    private SiteNetwork _network;
+    public int Id { get => _layerId; }
+    public int Size { get => Sites.Length; }
+
+    public NetworkLayer(int id, SiteNetwork network)
+    {
+        _layerId = id;
+        _network = network;
+    }
 
     public NetworkLayer Generate(int count)
     {
         Sites = new SiteData[count];
-        for (int i = 0; i < count; i++)
+        GenerateSites();
+        if (Id > 0)
         {
-            Sites[i] = new SiteData(this);
+            CalculateMainPath();
+        }
+        else
+        {
+            CalculateHorizontalPath();
         }
 
         return this;
+    }
+
+    public void GenerateSites()
+    {
+        for (int i = 0; i < Size; i++)
+        {
+            Sites[i] = new SiteData(this, i);
+        }
+    }
+
+    public void CalculateMainPath()
+    {
+        SiteData prevSite = GetPrevious().FindConnected();
+        if (prevSite == null)
+        {
+            CalculateRandomPath();
+            return;
+        }
+        SiteData.Connect(GetRandomChild(), prevSite);
+    }
+
+    public void CalculateRandomPath()
+    {
+        SiteData.Connect(GetRandomChild(), GetPrevious().GetRandomChild());
+    }
+
+    public void CalculateDisconnectedPaths()
+    {
+        int retryCount = 0;
+        while (FindDisconnected() != null && retryCount++ < 30)
+        {
+            SiteData disconnectedSite = FindDisconnected();
+            SiteData randomSite = GetRandomChild();
+            if (randomSite != disconnectedSite && randomSite.IsAdjacentTo(disconnectedSite))
+                SiteData.Connect(randomSite, disconnectedSite);
+        }
+
+        if (retryCount >= 30)
+            throw new Exception("Couldn't connect bad nodes");
+    }
+
+    public void CalculateHorizontalPath()
+    {
+        for (int i = 1; i < Size; i++)
+        {
+            SiteData.Connect(Sites[i], Sites[i - 1]);
+        }
+    }
+
+    public SiteData GetRandomChild()
+    {
+        return Randy.FromArray<SiteData>(Sites);
+    }
+
+    public SiteData FindConnected()
+    {
+        foreach (SiteData site in Sites)
+        {
+            if (site.HasConnection)
+                return site;
+        }
+        return null;
+    }
+
+    public SiteData FindDisconnected()
+    {
+        foreach (SiteData site in Sites)
+        {
+            if (!site.HasConnection)
+                return site;
+        }
+        return null;
+    }
+
+    public NetworkLayer GetPrevious()
+    {
+        if (_layerId == 0)
+            return null;
+
+        return _network.Layers[_layerId - 1];
     }
 }
