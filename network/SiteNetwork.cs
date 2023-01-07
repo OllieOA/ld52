@@ -6,7 +6,7 @@ using System.Collections.Generic;
 // Emitted
 // Arrived(bool visited, string[] urls)
 
-// // Listens to
+// Listens to
 // Goto(string url)
 // Back()
 
@@ -60,7 +60,7 @@ public class SiteNetwork : Node2D
         InstantiateNetwork();
 
 
-        OnArrival(Layers[0].Sites[0].Id); // won't work for second time around
+        OnArrival(Layers[0].Sites[0].Id);
     }
 
     public void Regenerate()
@@ -105,7 +105,6 @@ public class SiteNetwork : Node2D
 
     public void OnArrival(int id)
     {
-
         CurrentSite = SiteNodes[id].Data;
         bool visited = CurrentSite.IsVisited;
         CurrentSite.Activate();
