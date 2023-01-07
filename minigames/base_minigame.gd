@@ -1,65 +1,90 @@
 class_name BaseMinigame extends Panel
 
 signal minigame_complete(score)
-signal player_str_updated
+signal player_str_updated(key_not_valid)
 
 enum MinigameType {
 	ANAGRAM,
 	PROMPT,
 	GRID,
-	HACK
+	HACK,
+	CAPITALS,
+	HANGMAN,
+	COUNTDOWN,
+	ALPHABET,
+	NUMBERS,
+	LONGEST,
+	SHORTEST,
+	SPELLING
 }
+
+# Some colours - TODO: Yuri to tweak
+export (Color) var correct_position_color = Color("#639765")
+export (Color) var incorrect_position_color = Color("#a65455")
+export (Color) var active_position_color = Color("#4682b4")
+export (Color) var neutral_color = Color("acacac")
+export (Color) var inactive_color = Color("444444")
+
+var keys_pressed := {}  # TODO: Extend this structure into limited special chars
+var can_backspace := true
 
 var player_str := ""
 
-const minigame_lookup = {
-	MinigameType.ANAGRAM: "res://minigames/anagram.tscn",
-	MinigameType.PROMPT: "res://minigames/prompt.tscn",
-	MinigameType.GRID: "res://minigames/grid.tscn",
-	MinigameType.HACK: "res://minigames/hack.tscn",
-}
-
-var minigame_started := false
-var word_list = load("res://minigames/word_list.tres") as WordList
+var minigame_active := false
+var word_utils = load("res://utils/word_utils.tres") as WordUtils
 
 func _ready() -> void:
 	randomize()
-	word_list.generate_word_list()
+	word_utils.generate_word_list()
+	word_utils.generate_alphabet()
 	connect("player_str_updated", self, "_handle_player_str_updated")
-
-
-func _process(delta: float) -> void:
-	if minigame_started:
-		pass
+	for each_scancode in word_utils.valid_scancodes:
+		keys_pressed[each_scancode] = false
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("backspace_word"):
-		player_str = player_str.substr(0, -2)
-		emit_signal("player_str_updated")
-	if event is InputEventKey and not event.is_pressed():
-		var typed_event = event as InputEventKey
-		var key_typed = PoolByteArray([typed_event.unicode]).get_string_from_utf8()
-		print("KEY TYPED " + key_typed)
-		player_str += key_typed
-		emit_signal("player_str_updated")
+	if not minigame_active:
+		return
+	if event.is_action_pressed("backspace_word") and can_backspace:
+		player_str = player_str.substr(0, len(player_str) - 1)
+		emit_signal("player_str_updated", false)
+	elif event is InputEventKey:
+		if event.scancode in word_utils.valid_scancodes:
+			if not keys_pressed[event.scancode]:  # Check if currently pressed - prevents double keys
+				keys_pressed[event.scancode] = true
+				var key_typed = ""
+				key_typed = OS.get_scancode_string(event.scancode)
+				player_str += key_typed
+				emit_signal("player_str_updated", key_typed == "")
 
+			elif not event.is_pressed():  # Allow the key to be pressed again
+				keys_pressed[event.scancode] = false
 
-func get_random_words(target_length: int) -> Array:
+func get_random_words(target_num_words: int, min_word_length: int, max_word_length: int) -> Array:
 	var strings = []
 
-	while len(strings) < target_length:
-		var rand_choice = word_list.word_list[randi() % word_list.word_list.size()]
-		if not rand_choice in strings:
+	while len(strings) < target_num_words:
+		var rand_choice = word_utils.word_list[randi() % word_utils.word_list.size()]
+		if not rand_choice in strings and len(rand_choice) <= max_word_length and len(rand_choice) >= min_word_length:
 			strings.append(rand_choice)
 	
 	return strings
 
 
-
 func start_minigame() -> void:
-	minigame_started = true
+	minigame_active = true
 
 
-func _handle_player_str_updated() -> void:
+func finish_minigame() -> void:
+	minigame_active = false
+	emit_signal("minigame_complete")
+
+
+func set_bbcode_color_string(string: String, color: Color) -> String:
+	# False for no alpha
+	var bbcode_str = "[color=#" + color.to_html(false) + "]" + string + "[/color]"
+	return bbcode_str
+
+
+func _handle_player_str_updated(key_not_valid) -> void:
 	pass  # TO BE OVERLOADED

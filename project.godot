@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "BaseMinigame",
+"class": "Alphabet",
+"language": "GDScript",
+"path": "res://minigames/alphabet.gd"
+}, {
+"base": "BaseMinigame",
 "class": "Anagram",
 "language": "GDScript",
 "path": "res://minigames/anagram.gd"
@@ -19,21 +24,28 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://minigames/base_minigame.gd"
 }, {
+"base": "BaseMinigame",
+"class": "Capitals",
+"language": "GDScript",
+"path": "res://minigames/capitals.gd"
+}, {
 "base": "Button",
 "class": "ClickingButton",
 "language": "GDScript",
 "path": "res://utils/click_button.gd"
 }, {
 "base": "Resource",
-"class": "WordList",
+"class": "WordUtils",
 "language": "GDScript",
-"path": "res://minigames/word_list.gd"
+"path": "res://utils/word_utils.gd"
 } ]
 _global_script_class_icons={
+"Alphabet": "",
 "Anagram": "",
 "BaseMinigame": "",
+"Capitals": "",
 "ClickingButton": "",
-"WordList": ""
+"WordUtils": ""
 }
 
 [application]
@@ -85,6 +97,11 @@ texture={
 backspace_word={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777220,"unicode":0,"echo":false,"script":null)
+ ]
+}
+start_minigame={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777221,"unicode":0,"echo":false,"script":null)
  ]
 }
 

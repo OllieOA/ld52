@@ -8,6 +8,10 @@
 [node name="anagram" instance=ExtResource( 1 )]
 theme = ExtResource( 3 )
 script = ExtResource( 2 )
+correct_position_color = Color( 0.388235, 0.592157, 0.396078, 1 )
+incorrect_position_color = Color( 0.65098, 0.329412, 0.333333, 1 )
+active_position_color = Color( 0.27451, 0.509804, 0.705882, 1 )
+neutral_color = Color( 0.67451, 0.67451, 0.67451, 1 )
 
 [node name="anagram_container" type="VBoxContainer" parent="." index="0"]
 anchor_left = 0.5
@@ -25,8 +29,11 @@ unique_name_in_owner = true
 margin_right = 260.0
 margin_bottom = 60.0
 custom_fonts/normal_font = ExtResource( 4 )
-text = "WORDWORD"
+bbcode_enabled = true
+bbcode_text = "  WORDWORD"
+text = "  WORDWORD"
 fit_content_height = true
+scroll_active = false
 
 [node name="hseparator" type="HSeparator" parent="anagram_container" index="1"]
 margin_top = 64.0
@@ -39,5 +46,8 @@ margin_top = 72.0
 margin_right = 260.0
 margin_bottom = 132.0
 custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "> WORDWORD"
 text = "> WORDWORD"
 fit_content_height = true
+scroll_active = false

@@ -169,8 +169,7 @@ def main() -> None:
                 continue
 
     target_words = []
-
-    next_word = False
+    unique_sets = []
 
     for idx, word in enumerate(words):
         if idx == 386:
@@ -193,14 +192,11 @@ def main() -> None:
             continue
         if word.lower() in target_words:
             continue
+        if set(word.lower()) in unique_sets:  # Ensure anagrams are unique
+            continue
 
         target_words.append(word.lower())
-        if next_word:
-            print(word)
-            next_word = False
-
-        if word.lower() == "proved":
-            next_word = True
+        unique_sets.append(set(word.lower()))
 
         if len(target_words) > TARGET_LEN:
             break
