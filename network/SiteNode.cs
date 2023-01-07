@@ -35,3 +35,12 @@ public class SiteNode : Node2D
         GetNode<Label>("Label").Text = "" + Data.Id;
     }
 }
+
+
+// Signals
+// Emitted
+// Arrived(bool visited, string[] urls)
+
+// // Listens to
+// Goto(string url)
+// Back()
