@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://minigames/base_minigame.tscn" type="PackedScene" id=1]
+[ext_resource path="res://theme/fonts/minigame_capitals_font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://theme/fonts/capitals.gd" type="Script" id=3]
+
+[node name="capitals" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+
+[node name="prompt_text" type="RichTextLabel" parent="." index="0"]
+unique_name_in_owner = true
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 270.0
+margin_bottom = 170.0
+rect_min_size = Vector2( 0, 160 )
+custom_fonts/normal_font = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "> PROMPTPROMPTP
+ROMTPROMPTPROMP
+TPROMPTPROMPTPR
+OMPTPROMPTPROMP"
+text = "> PROMPTPROMPTP
+ROMTPROMPTPROMP
+TPROMPTPROMPTPR
+OMPTPROMPTPROMP"
+scroll_active = false

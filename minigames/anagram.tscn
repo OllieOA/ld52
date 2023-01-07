@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://minigames/base_minigame.tscn" type="PackedScene" id=1]
+[ext_resource path="res://minigames/anagram.gd" type="Script" id=2]
+[ext_resource path="res://theme/minigame_play_theme.tres" type="Theme" id=3]
+[ext_resource path="res://theme/fonts/minigame_anagram_font.tres" type="DynamicFont" id=4]
+
+[node name="anagram" instance=ExtResource( 1 )]
+theme = ExtResource( 3 )
+script = ExtResource( 2 )
+correct_position_color = Color( 0.388235, 0.592157, 0.396078, 1 )
+incorrect_position_color = Color( 0.65098, 0.329412, 0.333333, 1 )
+active_position_color = Color( 0.27451, 0.509804, 0.705882, 1 )
+neutral_color = Color( 0.67451, 0.67451, 0.67451, 1 )
+
+[node name="anagram_container" type="VBoxContainer" parent="." index="0"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -130.0
+margin_top = -65.5
+margin_right = 130.0
+margin_bottom = 65.5
+size_flags_horizontal = 4
+
+[node name="prompt_word_label" type="RichTextLabel" parent="anagram_container" index="0"]
+unique_name_in_owner = true
+margin_right = 260.0
+margin_bottom = 60.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "  WORDWORD"
+text = "  WORDWORD"
+fit_content_height = true
+scroll_active = false
+
+[node name="hseparator" type="HSeparator" parent="anagram_container" index="1"]
+margin_top = 64.0
+margin_right = 260.0
+margin_bottom = 68.0
+
+[node name="response_label" type="RichTextLabel" parent="anagram_container" index="2"]
+unique_name_in_owner = true
+margin_top = 72.0
+margin_right = 260.0
+margin_bottom = 132.0
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "> WORDWORD"
+text = "> WORDWORD"
+fit_content_height = true
+scroll_active = false
