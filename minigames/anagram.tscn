@@ -20,24 +20,24 @@ margin_right = 130.0
 margin_bottom = 65.5
 size_flags_horizontal = 4
 
-[node name="prompt_word_label" type="Label" parent="anagram_container" index="0"]
+[node name="prompt_word_label" type="RichTextLabel" parent="anagram_container" index="0"]
 unique_name_in_owner = true
 margin_right = 260.0
-margin_bottom = 59.0
-custom_fonts/font = ExtResource( 4 )
+margin_bottom = 60.0
+custom_fonts/normal_font = ExtResource( 4 )
 text = "WORDWORD"
-align = 1
+fit_content_height = true
 
 [node name="hseparator" type="HSeparator" parent="anagram_container" index="1"]
-margin_top = 63.0
+margin_top = 64.0
 margin_right = 260.0
-margin_bottom = 67.0
+margin_bottom = 68.0
 
 [node name="response_label" type="RichTextLabel" parent="anagram_container" index="2"]
 unique_name_in_owner = true
-margin_top = 71.0
+margin_top = 72.0
 margin_right = 260.0
-margin_bottom = 131.0
+margin_bottom = 132.0
 custom_fonts/normal_font = ExtResource( 4 )
 text = "> WORDWORD"
 fit_content_height = true
