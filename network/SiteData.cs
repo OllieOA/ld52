@@ -35,10 +35,6 @@ public class SiteData : Resource
         _address_generator_node = (Godot.Object)_address_generator.New();
         _address_generator_node.Call("assign_address", this);
 
-        // _address_generator_node.Call("print_stuff");
-        // _address = $"{_id}";
-        GD.Print(_address);
-
         Neighbours = new List<SiteData>();
     }
 
