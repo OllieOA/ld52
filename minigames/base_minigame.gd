@@ -31,12 +31,10 @@ var can_backspace := true
 var player_str := ""
 
 var minigame_active := false
-var word_utils = load("res://utils/word_utils.tres") as WordUtils
+var word_utils = preload("res://utils/word_utils.tres") as WordUtils
 
 func _ready() -> void:
 	randomize()
-	word_utils.generate_word_list()
-	word_utils.generate_alphabet()
 	connect("player_str_updated", self, "_handle_player_str_updated")
 	for each_scancode in word_utils.valid_scancodes:
 		keys_pressed[each_scancode] = false
