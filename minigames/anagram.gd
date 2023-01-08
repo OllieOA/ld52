@@ -10,7 +10,7 @@ func _ready() -> void:
 	connect("minigame_complete", self, "_handle_minigame_complete")
 
 	# Set up word target
-	correct_word = get_random_words(1, 4, 6)[0]
+	correct_word = word_utils.get_random_words(1, 4, 6)[0]
 	
 	jumbled_word = correct_word
 

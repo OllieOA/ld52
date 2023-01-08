@@ -64,7 +64,7 @@ _global_script_class_icons={
 
 config/name="LD52"
 config/description="Yuri and Ollie's LD52 game jam entry"
-run/main_scene="res://test_scene.tscn"
+run/main_scene="res://level/level.tscn"
 boot_splash/image="res://ui/gremlindevelopment_splash_screen.png"
 
 [autoload]

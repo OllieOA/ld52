@@ -64,7 +64,7 @@ public class SiteNetwork : Node2D
         Layers = new List<NetworkLayer>();
         SiteNodes = new Dictionary<int, SiteNode>();
 
-        GD.Print("===== Regenerating =====");
+        // GD.Print("===== Regenerating =====");
         Generate();
         Update();
     }

@@ -4,6 +4,8 @@
 
 [node name="player_camera" type="Camera2D"]
 unique_name_in_owner = true
-position = Vector2( 0, 240 )
 current = true
 script = ExtResource( 1 )
+
+[node name="pos_tween" type="Tween" parent="."]
+unique_name_in_owner = true

@@ -14,7 +14,7 @@ var insert_indices := []
 func _ready() -> void:
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
-	correct_word = get_random_words(1, 6, 8)[0]
+	correct_word = word_utils.get_random_words(1, 6, 8)[0]
 	print(correct_word)
 	can_backspace = false
 

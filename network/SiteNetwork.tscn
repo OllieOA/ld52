@@ -5,13 +5,9 @@
 [ext_resource path="res://network/Mover.tscn" type="PackedScene" id=3]
 [ext_resource path="res://network/Mover.cs" type="Script" id=4]
 
-[node name="Node2D" type="Node2D"]
-
-[node name="SiteNetwork" type="Node2D" parent="."]
-position = Vector2( 34, 241 )
+[node name="SiteNetwork" type="Node2D"]
 script = ExtResource( 1 )
 SiteNodeScene = ExtResource( 2 )
 
-[node name="Mover" parent="SiteNetwork" instance=ExtResource( 3 )]
-position = Vector2( -34, -241 )
+[node name="Mover" parent="." instance=ExtResource( 3 )]
 script = ExtResource( 4 )

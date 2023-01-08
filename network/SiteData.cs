@@ -45,7 +45,7 @@ public class SiteData : Resource
 
     public static void Connect(SiteData from, SiteData to)
     {
-        GD.Print($"Connecting {from.Id} to {to.Id}");
+        // GD.Print($"Connecting {from.Id} to {to.Id}");
         from.ConnectTo(to);
         to.ConnectTo(from);
     }
@@ -53,7 +53,7 @@ public class SiteData : Resource
 
     public void Activate()
     {
-        GD.Print($"{Id} is activated");
+        // GD.Print($"{Id} is activated");
         _active = true;
         _visited = true;
     }

@@ -60,16 +60,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif not event.is_pressed():  # Allow the key to be pressed again
 				keys_pressed[event.scancode] = false
 
-func get_random_words(target_num_words: int, min_word_length: int, max_word_length: int) -> Array:
-	var strings = []
-
-	while len(strings) < target_num_words:
-		var rand_choice = word_utils.word_list[randi() % word_utils.word_list.size()]
-		if not rand_choice in strings and len(rand_choice) <= max_word_length and len(rand_choice) >= min_word_length:
-			strings.append(rand_choice)
-	
-	return strings
-
 
 func start_minigame() -> void:
 	minigame_active = true

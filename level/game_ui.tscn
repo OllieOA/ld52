@@ -1,39 +1,96 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://theme/game_ui_theme.tres" type="Theme" id=1]
 [ext_resource path="res://level/game_ui.gd" type="Script" id=2]
+[ext_resource path="res://theme/game_ui_website_entry_theme.tres" type="Theme" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.439216, 0.439216, 0.439216, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.662745, 0.662745, 0.662745, 1 )
 
 [node name="game_ui" type="CanvasLayer"]
 unique_name_in_owner = true
 script = ExtResource( 2 )
 
-[node name="top_row" type="HBoxContainer" parent="."]
+[node name="theme_node" type="Control" parent="."]
 anchor_right = 1.0
-margin_left = 10.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+
+[node name="website_entry" type="Panel" parent="theme_node"]
+anchor_left = 0.5
+anchor_top = 0.97
+anchor_right = 0.5
+anchor_bottom = 0.97
+margin_left = -200.0
+margin_top = -40.0
+margin_right = 200.0
+rect_min_size = Vector2( 0, 40 )
+theme = ExtResource( 3 )
+
+[node name="website_hbox" type="HBoxContainer" parent="theme_node/website_entry"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 15.0
+margin_top = 5.0
+margin_right = -15.0
+margin_bottom = -5.0
+custom_constants/separation = 0
+
+[node name="http_box" type="Panel" parent="theme_node/website_entry/website_hbox"]
+margin_right = 125.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 125, 0 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="http_label" type="RichTextLabel" parent="theme_node/website_entry/website_hbox/http_box"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = -13.0
+margin_bottom = 14.0
+text = "https://www."
+scroll_active = false
+
+[node name="website_entry_box" type="Panel" parent="theme_node/website_entry/website_hbox"]
+margin_left = 125.0
+margin_right = 369.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 244, 0 )
+custom_styles/panel = SubResource( 2 )
+
+[node name="website_entry_label" type="RichTextLabel" parent="theme_node/website_entry/website_hbox/website_entry_box"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 5.0
+margin_top = -13.0
+margin_right = 120.0
+margin_bottom = 15.0
+bbcode_enabled = true
+bbcode_text = "website.com"
+text = "website.com"
+scroll_active = false
+
+[node name="data_label" type="Label" parent="theme_node"]
+unique_name_in_owner = true
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -220.0
 margin_top = 10.0
 margin_right = -10.0
-margin_bottom = 14.0
-theme = ExtResource( 1 )
-alignment = 1
-
-[node name="time_to_die" type="Label" parent="top_row"]
-unique_name_in_owner = true
-margin_left = 27.0
-margin_right = 237.0
-margin_bottom = 33.0
-text = "Caught in 00:00"
-
-[node name="firewall_proximity" type="ProgressBar" parent="top_row"]
-unique_name_in_owner = true
-margin_left = 267.0
-margin_right = 567.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 300, 30 )
-percent_visible = false
-
-[node name="data_label" type="Label" parent="top_row"]
-unique_name_in_owner = true
-margin_left = 597.0
-margin_right = 807.0
 margin_bottom = 33.0
 text = "Data: 0,000,000"
+align = 2
+
+[node name="firewall_proximity" type="ProgressBar" parent="theme_node"]
+unique_name_in_owner = true
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 400.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 500, 30 )
+percent_visible = false

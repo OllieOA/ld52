@@ -3,7 +3,6 @@ extends CanvasLayer
 
 const MAX_SCORE_RENDERED = 9999999
 
-onready var time_to_die = get_node("%time_to_die")
 onready var firewall_proximity_meter = get_node("%firewall_proximity")
 onready var data_label = get_node("%data_label")
 

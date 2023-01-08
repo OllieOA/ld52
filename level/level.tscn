@@ -19,3 +19,5 @@ unique_name_in_owner = true
 [node name="firewall" parent="." instance=ExtResource( 3 )]
 unique_name_in_owner = true
 position = Vector2( 0, 240 )
+
+[node name="website_labels" type="Node2D" parent="."]
