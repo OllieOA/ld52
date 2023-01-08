@@ -23,9 +23,9 @@ func _ready() -> void:
 	var bbcode_jumbled_word = ""
 	for idx in range(len(jumbled_word)):
 		if jumbled_word[idx] == correct_word[idx]:
-			bbcode_jumbled_word += set_bbcode_color_string(jumbled_word[idx], correct_position_color)
+			bbcode_jumbled_word += color_text_utils.set_bbcode_color_string(jumbled_word[idx], color_text_utils.correct_position_color)
 		else:
-			bbcode_jumbled_word += set_bbcode_color_string(jumbled_word[idx], neutral_color)
+			bbcode_jumbled_word += color_text_utils.set_bbcode_color_string(jumbled_word[idx], color_text_utils.neutral_color)
 
 	prompt_word_label.parse_bbcode("  " + bbcode_jumbled_word)
 	response_label.text = "> " + player_str
@@ -75,5 +75,5 @@ func _handle_player_str_updated(key_not_valid: bool) -> void:
 
 
 func _handle_minigame_complete() -> void:
-	var bbcode_player_str = set_bbcode_color_string(player_str, correct_position_color)
+	var bbcode_player_str = color_text_utils.set_bbcode_color_string(player_str, color_text_utils.correct_position_color)
 	response_label.parse_bbcode("> " + bbcode_player_str)

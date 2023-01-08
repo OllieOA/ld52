@@ -20,6 +20,7 @@ func generate_all() -> void:
 	_generate_alphabet()
 	_generate_url_suffixes()
 
+
 func _generate_word_list() -> void:
 	var f = File.new()
 	assert(f.file_exists(word_list_path), "Cannot find word list!")
@@ -42,6 +43,9 @@ func _generate_alphabet() -> void:
 
 
 func _generate_url_suffixes() -> void:
+	if len(alphabet) == 0:
+		_generate_alphabet()
+
 	var chance_of_double := 0.3
 	while len(url_suffixes) < 20:
 		var new_url_suffix = "."
@@ -58,6 +62,9 @@ func _generate_url_suffixes() -> void:
 
 
 func get_random_words(target_num_words: int, min_word_length: int, max_word_length: int) -> Array:
+	if len(word_list) == 0:
+		_generate_word_list()
+
 	var strings = []
 
 	while len(strings) < target_num_words:
@@ -69,12 +76,17 @@ func get_random_words(target_num_words: int, min_word_length: int, max_word_leng
 
 
 func get_random_website() -> String:
-	var random_pool = get_random_words(3, 4, 8)
+	if len(url_suffixes) == 0:
+		_generate_url_suffixes()
 
+	var random_pool = get_random_words(3, 4, 8)
 	var website_address = ""
 
 	while len(website_address) < MIN_URL_LENGTH:
 		website_address += random_pool.pop_back().to_lower()
+
+	while len(website_address) > MAX_URL_LENGTH:
+		website_address = website_address.substr(0, len(website_address) - 1)
 
 	website_address += url_suffixes[rng.randi() % url_suffixes.size()]
 

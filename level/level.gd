@@ -2,7 +2,8 @@ class_name Level extends Node2D
 
 
 # Handle signals
-signal example_signal
+signal website_prompt_enabled
+signal website_prompt_disabled
 
 # Get relevant nodes
 onready var game_ui = get_node("%game_ui")

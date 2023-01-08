@@ -40,7 +40,7 @@ public class SiteNetwork : Node2D
         for (int i = 1; i < Layers.Count; i++)
         {
             Layers[i].CalculateRandomPath();
-            Layers[i].CalculateRandomPath();
+            // Layers[i].CalculateRandomPath();
         }
 
         for (int i = 1; i < Layers.Count; i++)

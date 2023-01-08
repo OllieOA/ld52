@@ -36,6 +36,6 @@ public class SiteNode : Node2D
     public void Assign(SiteData data)
     {
         _data = data;
-        GetNode<Label>("Label").Text = "" + Data.Id;
+        GetNode<RichTextLabel>("address_label").Text = "" + Data.Address;
     }
 }

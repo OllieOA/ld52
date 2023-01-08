@@ -61,13 +61,13 @@ func _build_bbcode_capitals() -> String:
 		var target_char = noise_string[insert_indices[idx]]
 		prev_index = insert_indices[idx] + 1
 
-		full_bbcode_str += set_bbcode_color_string(target_substr, inactive_color)
-		full_bbcode_str += set_bbcode_color_string(target_char, correct_position_color)
+		full_bbcode_str += color_text_utils.set_bbcode_color_string(target_substr, color_text_utils.inactive_color)
+		full_bbcode_str += color_text_utils.set_bbcode_color_string(target_char, color_text_utils.correct_position_color)
 
 	if curr_index == len(correct_word):
-		full_bbcode_str += set_bbcode_color_string(noise_string.substr(prev_index), inactive_color)
+		full_bbcode_str += color_text_utils.set_bbcode_color_string(noise_string.substr(prev_index), color_text_utils.inactive_color)
 	else:
-		full_bbcode_str += set_bbcode_color_string(noise_string.substr(prev_index), neutral_color)
+		full_bbcode_str += color_text_utils.set_bbcode_color_string(noise_string.substr(prev_index), color_text_utils.neutral_color)
 
 	return full_bbcode_str
 

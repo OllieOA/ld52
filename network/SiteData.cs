@@ -11,6 +11,8 @@ public class SiteData : Resource
     private bool _active;
     private bool _visited;
     private string _address;
+    private GDScript _address_generator;
+    private Godot.Object _address_generator_node;
 
     public List<SiteData> Neighbours;
     public int Id { get => _id; }
@@ -27,7 +29,15 @@ public class SiteData : Resource
         _id = instanceCount++;
         _layer = layer;
         _position = position;
-        _address = $"{_id}";
+
+        // Generate address in gdscript because me dumb
+        _address_generator = (GDScript)GD.Load("res://network/address_generator.gd");
+        _address_generator_node = (Godot.Object)_address_generator.New();
+        _address_generator_node.Call("assign_address", this);
+
+        // _address_generator_node.Call("print_stuff");
+        // _address = $"{_id}";
+        GD.Print(_address);
 
         Neighbours = new List<SiteData>();
     }
