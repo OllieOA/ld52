@@ -44,7 +44,7 @@ func _generate_alphabet() -> void:
 
 func _generate_url_suffixes() -> void:
 	if len(alphabet) == 0:
-		_generate_alphabet()
+		generate_all()
 
 	var chance_of_double := 0.3
 	while len(url_suffixes) < 20:
@@ -63,7 +63,7 @@ func _generate_url_suffixes() -> void:
 
 func get_random_words(target_num_words: int, min_word_length: int, max_word_length: int) -> Array:
 	if len(word_list) == 0:
-		_generate_word_list()
+		generate_all()
 
 	var strings = []
 
@@ -77,7 +77,7 @@ func get_random_words(target_num_words: int, min_word_length: int, max_word_leng
 
 func get_random_website() -> String:
 	if len(url_suffixes) == 0:
-		_generate_url_suffixes()
+		generate_all()
 
 	var random_pool = get_random_words(3, 4, 8)
 	var website_address = ""

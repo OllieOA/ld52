@@ -6,14 +6,17 @@ public class SiteNode : Node2D
     [Export] float WidthGap = 100;
     [Export] float HeightGap = 100;
     [Export] float GapScale = 1;
+    [Signal] public delegate void LabelAssigned();
 
     private Vector2 _offset;
     private SiteData _data;
+    private RichTextLabel _site_label;
     public SiteData Data { get => _data; }
+    public RichTextLabel SiteLabel { get => _site_label; }
 
     public override void _Ready()
     {
-
+        _site_label = GetNode<RichTextLabel>("address_label");
     }
 
     public override void _Process(float delta)
@@ -36,6 +39,17 @@ public class SiteNode : Node2D
     public void Assign(SiteData data)
     {
         _data = data;
-        GetNode<RichTextLabel>("address_label").Text = "" + Data.Address;
+        _site_label.ParseBbcode("[center]" + Data.Address + "[/center]");
+        EmitSignal("LabelAssigned");
+    }
+
+    public void ShowLabel()
+    {
+        _site_label.Show();
+    }
+
+    public void HideLabel()
+    {
+        _site_label.Hide();
     }
 }
