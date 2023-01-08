@@ -4,6 +4,7 @@ class_name Level extends Node2D
 # Handle signals
 signal website_prompt_enabled
 signal website_prompt_disabled
+signal WebsitePromptFinished
 
 # Get relevant nodes
 onready var game_ui = get_node("%game_ui")
@@ -45,6 +46,7 @@ func _ready() -> void:
 	_na = SignalBus.connect("unique_match_found", self, "_handle_traverse_to")
 
 	site_network.connect("Arrived", self, "_handle_website_arrived")
+	site_network.ShowAdjacentNodes()  # Initialise
 	# site_network.connect
 	website_input_handler.connect_network(site_network)
 
@@ -60,15 +62,17 @@ func _ready() -> void:
 func _handle_website_completed(website_id: int, score: int) -> void:
 	curr_score += score
 	game_ui.set_score(curr_score)
+	emit_signal("WebsitePromptFinished")  # For C# hook in
 
 
 func _handle_website_arrived(visited: bool, addresses: Array) -> void:
-	# Spawn a minigame
-	var new_minigame = minigame_scene.instance()
-	new_minigame.random_minigame = true
-	minigame_layer.add_child(new_minigame)
+	if not visited:
+		# Spawn a minigame
+		var new_minigame = minigame_scene.instance()
+		new_minigame.random_minigame = true
+		minigame_layer.add_child(new_minigame)
 
-	SignalBus.emit_signal("triggered_minigame_prompt")
+		SignalBus.emit_signal("triggered_minigame_prompt")
 
 
 func _handle_traverse_to(address: String) -> void:

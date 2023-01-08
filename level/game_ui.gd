@@ -63,7 +63,6 @@ func _handle_no_str_matched(curr_string: String) -> void:
 
 
 func _handle_triggered_minigame_prompt() -> void:
-	print("HIDING")
 	website_entry.hide()
 
 

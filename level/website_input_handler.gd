@@ -80,10 +80,13 @@ func _handle_website_str_updated(_key_not_valid) -> void:
 		SignalBus.emit_signal("website_str_confirmed", website_str)  # All error handling done, now move to match
 
 
-func _handle_arrived(_visited: bool, connected: Array) -> void:
+func _handle_arrived(visited: bool, connected: Array) -> void:
 	possible_matches = connected
 	website_str = ""
 	SignalBus.emit_signal("website_str_confirmed", website_str)
+	if visited:
+		can_enter = true
+		matched = false
 
 
 func _handle_website_minigame_completed(website_id: int, data_scraped: int) -> void:

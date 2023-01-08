@@ -23,6 +23,7 @@ public class SiteNetwork : Node2D
 
         Connect("Goto", this, "OnGoto");
         Connect("Arrival", this, "OnArrival");
+        this.GetParent().Connect("WebsitePromptFinished", this, "ShowAdjacentNodes");
 
         Generate();
     }
@@ -62,7 +63,6 @@ public class SiteNetwork : Node2D
         Layers = new List<NetworkLayer>();
         SiteNodes = new Dictionary<int, SiteNode>();
 
-        // GD.Print("===== Regenerating =====");
         Generate();
         Update();
     }
@@ -98,7 +98,10 @@ public class SiteNetwork : Node2D
         bool visited = CurrentSite.IsVisited;
         CurrentSite.Activate();
         EmitSignal("Arrived", visited, CurrentSite.AvailableAddresses());
+    }
 
+    public void ShowAdjacentNodes()
+    {
         foreach (SiteNode site in GetAdjacentNodes())
         {
             site.ShowLabel();

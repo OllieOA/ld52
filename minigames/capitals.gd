@@ -87,5 +87,4 @@ func _handle_player_str_updated(key_not_valid: bool) -> void:
 	prompt_text.parse_bbcode(full_bbcode_str)
 
 	if player_str == correct_word:
-		print("FIN")
 		finish_minigame()
