@@ -12,3 +12,6 @@ export.cfg
 data_*/
 
 word_tool/ld52
+
+# Sound
+*.flp

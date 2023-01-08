@@ -3,6 +3,12 @@ class_name BaseMinigame extends Panel
 signal minigame_complete(score)
 signal player_str_updated(key_not_valid)
 
+signal good_key()
+signal bad_key()
+
+onready var good_type_sound = get_node("%good_type_sound")
+onready var bad_type_sound = get_node("%bad_type_sound")
+
 enum MinigameType {
 	ANAGRAM,
 	# PROMPT,
@@ -25,10 +31,15 @@ var minigame_active := false
 var word_utils = preload("res://utils/word_utils.tres") as WordUtils
 var color_text_utils = preload("res://utils/color_text_utils.tres") as ColorTextUtils
 
+var rng = RandomNumberGenerator.new()
+
 
 func _ready() -> void:
-	randomize()
+	rng.randomize()
 	var _na = connect("player_str_updated", self, "_handle_player_str_updated")
+	_na = connect("good_key", self, "_play_good_key")
+	_na = connect("bad_key", self, "_play_bad_key")
+
 	for each_scancode in word_utils.valid_scancodes:
 		keys_pressed[each_scancode] = false
 
@@ -63,3 +74,12 @@ func finish_minigame() -> void:
 
 func _handle_player_str_updated(key_not_valid) -> void:
 	pass  # TO BE OVERLOADED
+
+
+func _play_good_key() -> void:
+	good_type_sound.pitch_scale = rng.randf_range(0.95, 1.05)
+	good_type_sound.play()
+
+
+func _play_bad_key() -> void:
+	bad_type_sound.play()

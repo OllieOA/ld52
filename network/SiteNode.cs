@@ -13,10 +13,18 @@ public class SiteNode : Node2D
     private RichTextLabel _site_label;
     public SiteData Data { get => _data; }
     public RichTextLabel SiteLabel { get => _site_label; }
+    public Node Pulser;
+    public Vector2 PulseOffset;
+
+    private static int offset_size = 20;
 
     public override void _Ready()
     {
         _site_label = GetNode<RichTextLabel>("address_label");
+        _offset = Randy.Vector(-offset_size, offset_size);
+
+        Pulser = GetNode<Node>("pulser");
+        Pulser.Call("inject_ref", this);
     }
 
     public override void _Process(float delta)
@@ -33,7 +41,7 @@ public class SiteNode : Node2D
     {
         float x = _data.LayerId * WidthGap * GapScale;
         float y = ((_data.Position * HeightGap) - (_data.SiblingCount * HeightGap / 2)) * GapScale;
-        return new Vector2(x, y) + _offset;
+        return new Vector2(x, y) + _offset + PulseOffset;
     }
 
     public void Assign(SiteData data)

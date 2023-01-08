@@ -12,7 +12,6 @@ var curr_index := 0
 var insert_indices := []
 
 func _ready() -> void:
-	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	correct_word = word_utils.get_random_words(1, 6, 8)[0]
 	print(correct_word)
@@ -20,7 +19,7 @@ func _ready() -> void:
 
 	noise_string = "> "
 	while len(noise_string) < TEXTBOX_SIZE:
-		noise_string += word_utils.alphabet[randi() % len(word_utils.alphabet)].to_lower()
+		noise_string += word_utils.alphabet[rng.randi() % len(word_utils.alphabet)].to_lower()
 
 	while len(insert_indices) < len(correct_word):
 		var rand_index = rng.randi_range(5, TEXTBOX_SIZE-1)
@@ -76,11 +75,13 @@ func _handle_player_str_updated(key_not_valid: bool) -> void:
 	var correct_key = correct_word[curr_index]
 
 	if key_not_valid:
-		pass  
+		emit_signal("bad_key")
 	elif player_str[-1] != correct_key:
 		player_str = player_str.substr(0, len(player_str) - 1)
+		emit_signal("bad_key")
 	else:
 		curr_index += 1
+		emit_signal("good_key")
 
 	# Update color
 	var full_bbcode_str = _build_bbcode_capitals()

@@ -3,7 +3,7 @@ extends Camera2D
 const LERP_SPEED = 0.05
 
 var mover_node  # Used as an anchor
-var x_offset = 200  # Be a little ahead of the camera
+var x_offset = 150  # Be a little ahead of the camera
 
 func _ready() -> void:
 	pass

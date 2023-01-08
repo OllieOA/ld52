@@ -4,6 +4,10 @@ extends Node2D
 
 signal website_str_updated(key_not_valid)
 
+onready var good_type_sound = get_node("%good_type_sound")
+onready var bad_type_sound = get_node("%bad_type_sound")
+
+
 var word_utils = preload("res://utils/word_utils.tres")
 var website_interface_active = true
 var keys_pressed := {}  # TODO: Wrap this up with the event code one
@@ -72,12 +76,15 @@ func _handle_website_str_updated(_key_not_valid) -> void:
 			SignalBus.emit_signal("unique_match_found", matched_strs[0])
 		else:
 			SignalBus.emit_signal("website_str_confirmed", website_str)
+			good_type_sound.play()
 	elif len(matched_strs) == 0:
 		can_enter = false  # Prevent enter, TODO: Make it clear why
 		SignalBus.emit_signal("no_str_matched", website_str)
+		bad_type_sound.play()
 	else:
 		# No full match yet but some available
 		SignalBus.emit_signal("website_str_confirmed", website_str)  # All error handling done, now move to match
+		good_type_sound.play()
 
 
 func _handle_arrived(visited: bool, connected: Array) -> void:

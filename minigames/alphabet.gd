@@ -43,10 +43,13 @@ func _handle_player_str_updated(key_not_valid: bool) -> void:
 
 	if key_not_valid:
 		pass  # TODO: Handle invalid key
+		emit_signal("bad_key")
 	elif player_str[-1] != correct_key:
 		player_str = player_str.substr(0, len(player_str) - 1)
+		emit_signal("bad_key")
 	else:
 		curr_index += 1
+		emit_signal("good_key")
 
 	# Update color
 	var full_bbcode_str = _build_bbcode_alpha_string()

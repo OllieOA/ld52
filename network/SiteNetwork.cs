@@ -123,10 +123,7 @@ public class SiteNetwork : Node2D
 
     public override void _Process(float delta)
     {
-        if (Input.IsActionJustPressed("debug_refresh"))
-        {
-            Regenerate();
-        }
+        Update();
     }
 
     public override void _Draw()

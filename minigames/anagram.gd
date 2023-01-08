@@ -41,7 +41,7 @@ func jumble(input_str: String) -> String:
 	var jumbled_string = ""
 
 	while len(input_string_as_array) > 0:
-		jumbled_string += input_string_as_array.pop_at(randi() % input_string_as_array.size())
+		jumbled_string += input_string_as_array.pop_at(rng.randi() % input_string_as_array.size())
 	return jumbled_string
 
 
@@ -64,9 +64,11 @@ func _jumbled_okay() -> bool:
 func _handle_player_str_updated(key_not_valid: bool) -> void:
 	if len(player_str) > len(correct_word):
 		print("TODO: HANDLE BLOCKING")
+		emit_signal("bad_key")
 		return
 
 	response_label.text = "> " + player_str
+	emit_signal("good_key")
 
 	# Detect the win
 	if player_str == correct_word:

@@ -1,9 +1,10 @@
 ### Visual
 - [ ] Positive and negative typing shake
-- [ ] Add offset to network
-- [ ] Add wobble/pulse to network
+- [x] Add offset to network
+- [x] Add wobble/pulse to network
 - [ ] Make better node sprite
-- [ ] 
+	- [ ] Make node sprite instead be a control node that can be zoomed in
+- [ ] Make better mover sprite
 
 ### Gameplay
 - [ ] Main menu
