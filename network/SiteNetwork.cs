@@ -2,14 +2,6 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-// Signals
-// Emitted
-// Arrived(bool visited, string[] urls)
-
-// Listens to
-// Goto(string url)
-// Back()
-
 public class SiteNetwork : Node2D
 {
     [Export] public int MaxDepth = 10;
@@ -29,10 +21,10 @@ public class SiteNetwork : Node2D
         Layers = new List<NetworkLayer>();
         SiteNodes = new Dictionary<int, SiteNode>();
 
-        Generate();
-
         Connect("Goto", this, "OnGoto");
         Connect("Arrival", this, "OnArrival");
+
+        Generate();
     }
 
     public void Generate()
@@ -59,7 +51,7 @@ public class SiteNetwork : Node2D
         InstantiateNetwork();
 
 
-        OnArrival(Layers[0].Sites[0].Id);
+        EmitSignal("Arrival", (Layers[0].Sites[0].Id));
     }
 
     public void Regenerate()

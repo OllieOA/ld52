@@ -27,6 +27,8 @@ public class SiteData : Resource
         _id = instanceCount++;
         _layer = layer;
         _position = position;
+        _address = $"{_id}";
+
         Neighbours = new List<SiteData>();
     }
 
