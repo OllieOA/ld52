@@ -33,8 +33,14 @@ enum GameStates {
 
 var game_state = GameStates.INITIALISING
 
+var word_utils = preload("res://utils/word_utils.tres") as WordUtils
+
 
 func _ready() -> void:
+	# Set up word utils
+	randomize()
+	word_utils.generate_all()
+
 	# Connect relevant signals
 	SignalBus.connect("website_completed", self, "_handle_website_completed")
 
@@ -47,6 +53,7 @@ func _ready() -> void:
 	# Get first website
 	player_camera.mover_node = mover_node
 
+	print(word_utils.get_random_website())
 
 # Signal callbacks
 func _handle_website_completed(website_id: int, score: int) -> void:
