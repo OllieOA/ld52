@@ -65,15 +65,14 @@ custom_styles/panel = SubResource( 2 )
 
 [node name="website_entry_label" type="RichTextLabel" parent="theme_node/website_entry/website_hbox/website_entry_box"]
 unique_name_in_owner = true
+anchor_left = 0.98
 anchor_top = 0.5
+anchor_right = 0.98
 anchor_bottom = 0.5
-margin_left = 5.0
+margin_left = -236.0
 margin_top = -13.0
-margin_right = 120.0
-margin_bottom = 15.0
+margin_bottom = 14.0
 bbcode_enabled = true
-bbcode_text = "website.com"
-text = "website.com"
 scroll_active = false
 
 [node name="data_label" type="Label" parent="theme_node"]

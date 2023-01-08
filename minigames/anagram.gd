@@ -7,7 +7,7 @@ var correct_word := ""
 var jumbled_word := ""
 
 func _ready() -> void:
-	connect("minigame_complete", self, "_handle_minigame_complete")
+	var _na = connect("minigame_complete", self, "_handle_minigame_complete")
 
 	# Set up word target
 	correct_word = word_utils.get_random_words(1, 4, 6)[0]
@@ -29,7 +29,6 @@ func _ready() -> void:
 
 	prompt_word_label.parse_bbcode("  " + bbcode_jumbled_word)
 	response_label.text = "> " + player_str
-	print("CORRECT_WORD " + correct_word)
 
 	start_minigame()
 

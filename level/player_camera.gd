@@ -9,9 +9,9 @@ func _ready() -> void:
 	pass
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if mover_node != null:
-		global_position = lerp(global_position, mover_node.global_position + Vector2(x_offset, 0), LERP_SPEED)
+		global_position.x = lerp(global_position.x, mover_node.global_position.x + x_offset, LERP_SPEED)
 
 
 func sharp_goto_position(set_position: Vector2) -> void:

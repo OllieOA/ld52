@@ -4,12 +4,18 @@ const word_list_path = "res://utils/wordlist.json"
 
 var word_list: Array
 var valid_scancodes: Array
+var special_scancodes := [KEY_PERIOD]
+var alpha_scancodes: Array
 var alphabet: Array
 
 const MIN_URL_LENGTH = 6
 const MAX_URL_LENGTH = 10
 var url_suffixes := []
 var generated_websites = []  # Track to make sure unique
+
+const SPECIAL_LOOKUP = {
+	KEY_PERIOD: ".",
+}
 
 var rng = RandomNumberGenerator.new()
 
@@ -37,10 +43,13 @@ func _generate_word_list() -> void:
 
 
 func _generate_alphabet() -> void:
-	valid_scancodes = range(KEY_A, KEY_Z + 1)
-	for each_scancode in valid_scancodes:
+	alpha_scancodes = range(KEY_A, KEY_Z + 1)
+	for each_scancode in alpha_scancodes:
 		alphabet.append(OS.get_scancode_string(each_scancode))
 
+	# Set other scancodes
+	valid_scancodes = alpha_scancodes
+	valid_scancodes += special_scancodes
 
 func _generate_url_suffixes() -> void:
 	if len(alphabet) == 0:

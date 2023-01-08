@@ -39,6 +39,7 @@ public class SiteNode : Node2D
     public void Assign(SiteData data)
     {
         _data = data;
+        _data.NodeReference = this;
         _site_label.ParseBbcode("[center]" + Data.Address + "[/center]");
         EmitSignal("LabelAssigned");
     }

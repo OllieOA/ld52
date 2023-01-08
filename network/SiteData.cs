@@ -11,8 +11,8 @@ public class SiteData : Resource
     private bool _active;
     private bool _visited;
     private string _address;
-    private GDScript _address_generator;
-    private Godot.Object _address_generator_node;
+    private GDScript _addressGenerator;
+    private Godot.Object _addressGeneratorNode;
 
     public List<SiteData> Neighbours;
     public int Id { get => _id; }
@@ -23,6 +23,7 @@ public class SiteData : Resource
     public bool IsActive { get => _active; }
     public bool IsVisited { get => _visited; }
     public string Address { get => _address; }
+    public SiteNode NodeReference;
 
     public SiteData(NetworkLayer layer, int position)
     {
@@ -31,9 +32,9 @@ public class SiteData : Resource
         _position = position;
 
         // Generate address in gdscript because me dumb
-        _address_generator = (GDScript)GD.Load("res://network/address_generator.gd");
-        _address_generator_node = (Godot.Object)_address_generator.New();
-        _address_generator_node.Call("assign_address", this);
+        _addressGenerator = (GDScript)GD.Load("res://network/address_generator.gd");
+        _addressGeneratorNode = (Godot.Object)_addressGenerator.New();
+        _addressGeneratorNode.Call("assign_address", this);
 
         Neighbours = new List<SiteData>();
     }
@@ -62,6 +63,7 @@ public class SiteData : Resource
         // GD.Print($"{Id} is activated");
         _active = true;
         _visited = true;
+        NodeReference.ShowLabel();
     }
 
     public void Deactivate()

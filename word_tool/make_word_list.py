@@ -154,6 +154,7 @@ WORD_BLACKLIST = [
     "quelque",
     "dutch",
     "grande",
+    "slavery",
 ]
 
 

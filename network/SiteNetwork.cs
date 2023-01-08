@@ -40,7 +40,6 @@ public class SiteNetwork : Node2D
         for (int i = 1; i < Layers.Count; i++)
         {
             Layers[i].CalculateRandomPath();
-            // Layers[i].CalculateRandomPath();
         }
 
         for (int i = 1; i < Layers.Count; i++)
@@ -49,7 +48,6 @@ public class SiteNetwork : Node2D
         }
 
         InstantiateNetwork();
-
 
         EmitSignal("Arrival", (Layers[0].Sites[0].Id));
     }
@@ -100,6 +98,24 @@ public class SiteNetwork : Node2D
         bool visited = CurrentSite.IsVisited;
         CurrentSite.Activate();
         EmitSignal("Arrived", visited, CurrentSite.AvailableAddresses());
+
+        foreach (SiteNode site in GetAdjacentNodes())
+        {
+            site.ShowLabel();
+        }
+    }
+
+    public SiteNode[] GetAdjacentNodes()
+    {
+        string[] available_addresses = CurrentSite.AvailableAddresses();
+        SiteNode[] adjacent_nodes = new SiteNode[available_addresses.Length];
+        for (int i = 0; i < available_addresses.Length; i++)
+        {
+            SiteData site = CurrentSite.FindFromAddress(available_addresses[i]);
+            SiteNode siteNode = SiteNodes[site.Id];
+            adjacent_nodes[i] = siteNode;
+        }
+        return adjacent_nodes;
     }
 
     public override void _Process(float delta)

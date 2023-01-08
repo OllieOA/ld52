@@ -11,6 +11,7 @@ onready var site_network = get_node("%site_network")
 onready var mover_node = site_network.get_node("Mover")  # under the site network
 onready var player_camera = get_node("%player_camera")
 onready var firewall = get_node("%firewall")
+onready var website_input_handler = get_node("%website_input_handler")
 
 # Handle minigames
 const minigame_scene = preload("res://minigames/base_minigame_prompt.tscn")
@@ -39,9 +40,12 @@ var word_utils = preload("res://utils/word_utils.tres") as WordUtils
 
 func _ready() -> void:
 	# Connect relevant signals
-	SignalBus.connect("website_completed", self, "_handle_website_completed")
+	var _na = SignalBus.connect("website_completed", self, "_handle_website_completed")
+	_na = SignalBus.connect("unique_match_found", self, "_handle_traverse_to")
 
 	site_network.connect("Arrived", self, "_handle_website_arrived")
+	# site_network.connect
+	website_input_handler.connect_network(site_network)
 
 	# Set up firewall
 	firewall.set_acceleration_multiplier(firewall_speed_multiplier)  # Used to speed up later (or stop movement for tutorial)
@@ -59,3 +63,7 @@ func _handle_website_completed(website_id: int, score: int) -> void:
 
 func _handle_website_arrived(visited: bool, addresses: Array) -> void:
 	print(addresses)
+
+
+func _handle_traverse_to(address: String) -> void:
+	site_network.emit_signal("Goto", address)

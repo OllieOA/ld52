@@ -5,17 +5,15 @@ signal player_str_updated(key_not_valid)
 
 enum MinigameType {
 	ANAGRAM,
-	PROMPT,
-	GRID,
-	HACK,
+	# PROMPT,
+	# GRID,
+	# HACK,
 	CAPITALS,
-	HANGMAN,
-	COUNTDOWN,  # doesn't match the feel
+	# HANGMAN,
 	ALPHABET,
-	NUMBERS,
-	LONGEST,
-	SHORTEST,
-	SPELLING  # on fence
+	# NUMBERS,
+	# LONGEST,
+	# SHORTEST,
 }
 
 var keys_pressed := {}  # TODO: Extend this structure into limited special chars
@@ -30,7 +28,7 @@ var color_text_utils = preload("res://utils/color_text_utils.tres") as ColorText
 
 func _ready() -> void:
 	randomize()
-	connect("player_str_updated", self, "_handle_player_str_updated")
+	var _na = connect("player_str_updated", self, "_handle_player_str_updated")
 	for each_scancode in word_utils.valid_scancodes:
 		keys_pressed[each_scancode] = false
 
