@@ -1,13 +1,18 @@
 class_name Level extends Node2D
 
+
 # Handle signals
 signal example_signal
 
 # Get relevant nodes
 onready var game_ui = get_node("%game_ui")
 onready var site_network = get_node("%site_network")
+onready var mover_node = site_network.get_node("Mover")  # under the site network
 onready var player_camera = get_node("%player_camera")
 onready var firewall = get_node("%firewall")
+
+# Handle minigames
+const minigame_scene = preload("res://minigames/base_minigame_prompt.tscn")
 
 # Handle firewall
 var firewall_speed_multiplier := 1.0
@@ -15,9 +20,6 @@ const firewall_start_pos := -300
 
 # Handle score
 var curr_score := 0
-
-# Handle network
-var current_website  # SiteData - cannot type hint
 
 # Handle states
 enum GameStates {
@@ -43,8 +45,7 @@ func _ready() -> void:
 	firewall.set_x_position(firewall_start_pos)
 
 	# Get first website
-	current_website = site_network.CurrentSite
-	print(current_website)
+	player_camera.mover_node = mover_node
 
 
 # Signal callbacks

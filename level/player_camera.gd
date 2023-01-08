@@ -1,30 +1,18 @@
 extends Camera2D
 
-onready var pos_tween = get_node("%pos_tween")
+const LERP_SPEED = 0.05
 
-const LERP_SPEED = 0.2
-
+var mover_node  # Used as an anchor
+var x_offset = 200  # Be a little ahead of the camera
 
 func _ready() -> void:
 	pass
 
 
-func _use_pos_tween(target_pos):
-	pos_tween.interpolate_property(
-		self,
-		"global_position",
-		global_position,
-		target_pos,
-		LERP_SPEED,
-		pos_tween.TRANS_SINE,
-		pos_tween.EASE_OUT
-	)
-	pos_tween.start()
+func _process(delta: float) -> void:
+	if mover_node != null:
+		global_position = lerp(global_position, mover_node.global_position + Vector2(x_offset, 0), LERP_SPEED)
 
 
 func sharp_goto_position(set_position: Vector2) -> void:
 	global_position = set_position
-
-
-func smooth_goto_position(set_position: Vector2) -> void:
-	_use_pos_tween(set_position)

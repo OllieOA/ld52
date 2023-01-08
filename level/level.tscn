@@ -20,4 +20,4 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 position = Vector2( 0, 240 )
 
-[node name="website_labels" type="Node2D" parent="."]
+[node name="website_handler" type="Node2D" parent="."]
