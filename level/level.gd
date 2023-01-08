@@ -12,6 +12,7 @@ onready var mover_node = site_network.get_node("Mover")  # under the site networ
 onready var player_camera = get_node("%player_camera")
 onready var firewall = get_node("%firewall")
 onready var website_input_handler = get_node("%website_input_handler")
+onready var minigame_layer = get_node("%minigame_layer")
 
 # Handle minigames
 const minigame_scene = preload("res://minigames/base_minigame_prompt.tscn")
@@ -62,7 +63,12 @@ func _handle_website_completed(website_id: int, score: int) -> void:
 
 
 func _handle_website_arrived(visited: bool, addresses: Array) -> void:
-	print(addresses)
+	# Spawn a minigame
+	var new_minigame = minigame_scene.instance()
+	new_minigame.random_minigame = true
+	minigame_layer.add_child(new_minigame)
+
+	SignalBus.emit_signal("triggered_minigame_prompt")
 
 
 func _handle_traverse_to(address: String) -> void:

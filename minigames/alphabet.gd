@@ -23,9 +23,9 @@ func _ready() -> void:
 
 func _build_bbcode_alpha_string() -> String:
 	var full_bbcode_str = "[center]"
-	full_bbcode_str += color_text_utils.set_bbcode_color_string("> ", color_text_utils.neutral_color)
+	full_bbcode_str += color_text_utils.set_bbcode_color_string(">", color_text_utils.neutral_color)
 	full_bbcode_str += color_text_utils.set_bbcode_color_string(player_str, color_text_utils.correct_position_color)
-	full_bbcode_str += color_text_utils.set_bbcode_color_string(correct_word.substr(curr_index), color_text_utils.inactive_color)
+	full_bbcode_str += color_text_utils.set_bbcode_color_string(correct_word.substr(curr_index), color_text_utils.neutral_color)
 	full_bbcode_str += "[/center]"
 
 	for linebreak in LINEBREAKS:

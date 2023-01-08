@@ -39,7 +39,7 @@ var minigame_lookup = {
 
 var loaded_minigame: Panel
 var minigame_started := false
-var website_id: int  # TODO: Check what Yuri calls this
+var website_id := 0  # TODO: Check what Yuri calls this
 
 # Set up time decay
 var loop_timer = Timer.new()
@@ -48,7 +48,7 @@ var loop_timer = Timer.new()
 func _ready() -> void:
 	randomize()
 	if random_minigame:
-		minigame_type = BaseMinigame.MinigameType.keys()[randi() % BaseMinigame.MinigameType.size()]
+		minigame_type = BaseMinigame.MinigameType.values()[randi() % BaseMinigame.MinigameType.size()]
 	prompt_text.text = prompt_texts[minigame_type]
 	start_minigame_button.connect("button_up", self, "_start_minigame") 
 
@@ -82,8 +82,8 @@ func _start_minigame() -> void:
 
 func _end_minigame() -> void:
 	loop_timer.stop()
-	SignalBus.emit_signal("website_completed", website_id, data_timer_slider)
 	yield(get_tree().create_timer(0.5), "timeout")  # TODO: Replace with a sound/animation
+	SignalBus.emit_signal("website_completed", website_id, data_timer_slider.value)
 	queue_free()
 
 

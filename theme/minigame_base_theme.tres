@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=11 format=2]
 
-[ext_resource path="res://assets/glassPanel_cornerTR.png" type="Texture" id=1]
+[ext_resource path="res://assets/glassPanel_cornerTR_darker.png" type="Texture" id=1]
 [ext_resource path="res://theme/styles/button_normal.tres" type="StyleBox" id=2]
 [ext_resource path="res://theme/styles/button_hover.tres" type="StyleBox" id=3]
 [ext_resource path="res://theme/styles/button_pressed.tres" type="StyleBox" id=4]

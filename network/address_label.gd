@@ -1,6 +1,6 @@
 extends RichTextLabel
 
-const PX_PER_CHAR = 8
+const PX_PER_CHAR = 9
 
 func _ready() -> void:
     # Only thing this needs to do is update its width when text is assigned

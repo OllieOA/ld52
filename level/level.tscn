@@ -22,3 +22,6 @@ unique_name_in_owner = true
 position = Vector2( 0, 240 )
 
 [node name="website_input_handler" parent="." instance=ExtResource( 6 )]
+
+[node name="minigame_layer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
