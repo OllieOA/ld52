@@ -1,6 +1,7 @@
 extends Control
 
 export (BaseMinigame.MinigameType) var minigame_type
+export (bool) var random_minigame = false
 export (int) var max_data := 200
 export (int) var decay_score := 1
 
@@ -10,18 +11,20 @@ onready var minigame_container = get_node("%minigame_container")
 onready var data_timer_slider = get_node("%data_timer")
 onready var data_available_label = get_node("%data_available")
 
+onready var hover_stylebox: StyleBoxTexture = preload("res://theme/styles/button_hover.tres")
+onready var normal_stylebox: StyleBoxTexture = preload("res://theme/styles/button_normal.tres")
+
 const prompt_texts = {
 	BaseMinigame.MinigameType.ANAGRAM: "Unscramble this!",
-	BaseMinigame.MinigameType.GRID: "Find the word!",
-	BaseMinigame.MinigameType.HACK: "Type anything quickly!",
-	BaseMinigame.MinigameType.PROMPT: "Type these words!",
+	# BaseMinigame.MinigameType.GRID: "Find the word!",
+	# BaseMinigame.MinigameType.HACK: "Type anything quickly!",
+	# BaseMinigame.MinigameType.PROMPT: "Type these words!",
 	BaseMinigame.MinigameType.CAPITALS: "Find the word!",
-	BaseMinigame.MinigameType.HANGMAN: "Play hangman!",
-	# BaseMinigame.MinigameType.COUNTDOWN: "Find 3 words (5 letters!",
+	# BaseMinigame.MinigameType.HANGMAN: "Play hangman!",
 	BaseMinigame.MinigameType.ALPHABET: "Type the alphabet!",
-	BaseMinigame.MinigameType.NUMBERS: "Type out the numbers!",
-	BaseMinigame.MinigameType.LONGEST: "Type the longest word!",
-	BaseMinigame.MinigameType.SHORTEST: "Type the shortest word!"
+	# BaseMinigame.MinigameType.NUMBERS: "Type out the numbers!",
+	# BaseMinigame.MinigameType.LONGEST: "Type the longest word!",
+	# BaseMinigame.MinigameType.SHORTEST: "Type the shortest word!"
 }
 
 var minigame_lookup = {
@@ -31,7 +34,6 @@ var minigame_lookup = {
 	# BaseMinigame.MinigameType.PROMPT: preload("res://minigames/prompt.tscn"),
 	BaseMinigame.MinigameType.CAPITALS: preload("res://minigames/capitals.tscn"),
 	# BaseMinigame.MinigameType.HANGMAN: preload("res://minigames/hangman.tscn"),
-	# BaseMinigame.MinigameType.COUNTDOWN: preload("res://minigames/countdown.tscn"),  # TODO: Requires more words
 	BaseMinigame.MinigameType.ALPHABET: preload("res://minigames/alphabet.tscn"),
 	# BaseMinigame.MinigameType.NUMBERS: preload("res://minigames/numbers.tscn"),
 	# BaseMinigame.MinigameType.LONGEST: preload("res://minigames/longest.tscn"),
@@ -40,13 +42,16 @@ var minigame_lookup = {
 
 var loaded_minigame: Panel
 var minigame_started := false
-var website_id: int  # TODO: Check what Yuri calls this
+var website_id := 0  # TODO: Check what Yuri calls this
 
 # Set up time decay
 var loop_timer = Timer.new()
 
 
 func _ready() -> void:
+	randomize()
+	if random_minigame:
+		minigame_type = BaseMinigame.MinigameType.values()[randi() % BaseMinigame.MinigameType.size()]
 	prompt_text.text = prompt_texts[minigame_type]
 	start_minigame_button.connect("button_up", self, "_start_minigame") 
 
@@ -63,7 +68,9 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("start_minigame") and not minigame_started:
+	if event.is_action_pressed("start_minigame"):
+		start_minigame_button.add_stylebox_override("normal", hover_stylebox)
+	elif event.is_action_released("start_minigame") and not minigame_started:
 		_start_minigame()
 
 func _start_minigame() -> void:
@@ -71,7 +78,7 @@ func _start_minigame() -> void:
 	minigame_container.show()
 	minigame_container.add_child(loaded_minigame)
 
-	loaded_minigame.connect("minigame_complete", self, "_end_minigame")
+	var _na = loaded_minigame.connect("minigame_complete", self, "_end_minigame")
 	
 	loaded_minigame.start_minigame()
 	minigame_started = true
@@ -80,8 +87,8 @@ func _start_minigame() -> void:
 
 func _end_minigame() -> void:
 	loop_timer.stop()
-	SignalBus.emit_signal("website_completed", website_id, data_timer_slider)
 	yield(get_tree().create_timer(0.5), "timeout")  # TODO: Replace with a sound/animation
+	SignalBus.emit_signal("website_completed", website_id, data_timer_slider.value)
 	queue_free()
 
 

@@ -23,9 +23,9 @@ func _ready() -> void:
 
 func _build_bbcode_alpha_string() -> String:
 	var full_bbcode_str = "[center]"
-	full_bbcode_str += set_bbcode_color_string("> ", neutral_color)
-	full_bbcode_str += set_bbcode_color_string(player_str, correct_position_color)
-	full_bbcode_str += set_bbcode_color_string(correct_word.substr(curr_index), inactive_color)
+	full_bbcode_str += color_text_utils.set_bbcode_color_string(">", color_text_utils.neutral_color)
+	full_bbcode_str += color_text_utils.set_bbcode_color_string(player_str, color_text_utils.correct_position_color)
+	full_bbcode_str += color_text_utils.set_bbcode_color_string(correct_word.substr(curr_index), color_text_utils.neutral_color)
 	full_bbcode_str += "[/center]"
 
 	for linebreak in LINEBREAKS:
@@ -43,15 +43,17 @@ func _handle_player_str_updated(key_not_valid: bool) -> void:
 
 	if key_not_valid:
 		pass  # TODO: Handle invalid key
+		emit_signal("bad_key")
 	elif player_str[-1] != correct_key:
 		player_str = player_str.substr(0, len(player_str) - 1)
+		emit_signal("bad_key")
 	else:
 		curr_index += 1
+		emit_signal("good_key")
 
 	# Update color
 	var full_bbcode_str = _build_bbcode_alpha_string()
 	alpha_text.parse_bbcode(full_bbcode_str)
 
 	if player_str == correct_word:
-		print("FIN")
 		finish_minigame()

@@ -6,7 +6,7 @@ var rng = RandomNumberGenerator.new()
 
 func _ready() -> void:
 	rng.randomize()
-	connect("button_down", self, "on_button_down")
+	var _na = connect("button_down", self, "on_button_down")
 
 
 func on_button_down() -> void:

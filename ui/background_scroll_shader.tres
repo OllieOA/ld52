@@ -1,0 +1,39 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec4 background_color : hint_color = vec4( 0.0, 0.0, 0.0, 1.0 );
+uniform vec4 line_color : hint_color = vec4( 0.0, 1.0, 1.0, 1.0 );
+uniform float line_freq = 10.0;
+uniform float height = 0.6;
+uniform float speed = 0.8;
+uniform vec2 scale = vec2( 2.0, 16.0 );
+uniform float line_thinness = 16.0;
+uniform float line_thickness = 4.0;
+
+void fragment( )
+{
+	// Lines
+	vec2 uv = UV * scale;
+	float shift = cos( floor( uv.y ) );
+	uv.x += shift;
+
+	float freq = clamp( cos( uv.x * line_freq ) * 3.0, 0.0, 1.0 ) * height;
+	float line = 1.0 - clamp( abs( freq - mod( uv.y, 1.0 ) ) * line_thinness, 0.0, 1.0 );
+	
+	vec4 electric_text = mix( background_color, line_color, line * mod( uv.x - TIME * speed * abs( shift ), line_thickness ) /*  * mod( TIME + shift, 1.0 ) */ );
+	
+	COLOR = electric_text;
+}"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/background_color = Color( 0.0196078, 0.415686, 0.588235, 1 )
+shader_param/line_color = Color( 0.027451, 0.482353, 0.639216, 1 )
+shader_param/line_freq = 9.0
+shader_param/height = 0.4
+shader_param/speed = 0.3
+shader_param/scale = Vector2( 6, 32 )
+shader_param/line_thinness = 32.0
+shader_param/line_thickness = 10.0

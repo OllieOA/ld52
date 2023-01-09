@@ -5,4 +5,5 @@
 [node name="player_camera" type="Camera2D"]
 unique_name_in_owner = true
 current = true
+zoom = Vector2( 1.2, 1.2 )
 script = ExtResource( 1 )

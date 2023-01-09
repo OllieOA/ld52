@@ -2,7 +2,9 @@ class_name Level extends Node2D
 
 
 # Handle signals
-signal example_signal
+signal website_prompt_enabled
+signal website_prompt_disabled
+signal WebsitePromptFinished
 
 # Get relevant nodes
 onready var game_ui = get_node("%game_ui")
@@ -10,6 +12,8 @@ onready var site_network = get_node("%site_network")
 onready var mover_node = site_network.get_node("Mover")  # under the site network
 onready var player_camera = get_node("%player_camera")
 onready var firewall = get_node("%firewall")
+onready var website_input_handler = get_node("%website_input_handler")
+onready var minigame_layer = get_node("%minigame_layer")
 
 # Handle minigames
 const minigame_scene = preload("res://minigames/base_minigame_prompt.tscn")
@@ -37,14 +41,14 @@ var word_utils = preload("res://utils/word_utils.tres") as WordUtils
 
 
 func _ready() -> void:
-	# Set up word utils
-	randomize()
-	word_utils.generate_all()
-
 	# Connect relevant signals
-	SignalBus.connect("website_completed", self, "_handle_website_completed")
+	var _na = SignalBus.connect("website_completed", self, "_handle_website_completed")
+	_na = SignalBus.connect("unique_match_found", self, "_handle_traverse_to")
 
 	site_network.connect("Arrived", self, "_handle_website_arrived")
+	site_network.ShowAdjacentNodes()  # Initialise
+	# site_network.connect
+	website_input_handler.connect_network(site_network)
 
 	# Set up firewall
 	firewall.set_acceleration_multiplier(firewall_speed_multiplier)  # Used to speed up later (or stop movement for tutorial)
@@ -53,13 +57,23 @@ func _ready() -> void:
 	# Get first website
 	player_camera.mover_node = mover_node
 
-	print(word_utils.get_random_website())
 
 # Signal callbacks
 func _handle_website_completed(website_id: int, score: int) -> void:
 	curr_score += score
 	game_ui.set_score(curr_score)
+	emit_signal("WebsitePromptFinished")  # For C# hook in
 
 
 func _handle_website_arrived(visited: bool, addresses: Array) -> void:
-	print(addresses)
+	if not visited:
+		# Spawn a minigame
+		var new_minigame = minigame_scene.instance()
+		new_minigame.random_minigame = true
+		minigame_layer.add_child(new_minigame)
+
+		SignalBus.emit_signal("triggered_minigame_prompt")
+
+
+func _handle_traverse_to(address: String) -> void:
+	site_network.emit_signal("Goto", address)
