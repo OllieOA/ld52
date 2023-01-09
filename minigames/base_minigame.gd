@@ -47,11 +47,15 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not minigame_active:
 		return
+
+	if event.is_action_pressed("debug_skip_minigame"):
+		finish_minigame()
+
 	if event.is_action_pressed("backspace_word") and can_backspace:
 		player_str = player_str.substr(0, len(player_str) - 1)
 		emit_signal("player_str_updated", false)
 	elif event is InputEventKey:
-		if event.scancode in word_utils.valid_scancodes:
+		if event.scancode in word_utils.alpha_scancodes:
 			if not keys_pressed[event.scancode]:  # Check if currently pressed - prevents double keys
 				keys_pressed[event.scancode] = true
 				var key_typed = ""

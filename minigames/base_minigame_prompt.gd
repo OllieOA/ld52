@@ -11,6 +11,9 @@ onready var minigame_container = get_node("%minigame_container")
 onready var data_timer_slider = get_node("%data_timer")
 onready var data_available_label = get_node("%data_available")
 
+onready var hover_stylebox: StyleBoxTexture = preload("res://theme/styles/button_hover.tres")
+onready var normal_stylebox: StyleBoxTexture = preload("res://theme/styles/button_normal.tres")
+
 const prompt_texts = {
 	BaseMinigame.MinigameType.ANAGRAM: "Unscramble this!",
 	# BaseMinigame.MinigameType.GRID: "Find the word!",
@@ -65,7 +68,9 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("start_minigame") and not minigame_started:
+	if event.is_action_pressed("start_minigame"):
+		start_minigame_button.add_stylebox_override("normal", hover_stylebox)
+	elif event.is_action_released("start_minigame") and not minigame_started:
 		_start_minigame()
 
 func _start_minigame() -> void:

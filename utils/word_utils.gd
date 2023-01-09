@@ -9,7 +9,7 @@ var alpha_scancodes: Array
 var alphabet: Array
 
 const MIN_URL_LENGTH = 6
-const MAX_URL_LENGTH = 10
+const MAX_URL_LENGTH = 12
 var url_suffixes := []
 var generated_websites = []  # Track to make sure unique
 

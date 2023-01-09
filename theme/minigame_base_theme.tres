@@ -24,7 +24,7 @@ modulate_color = Color( 0.145098, 0.258824, 0.290196, 1 )
 font_path = "res://theme/fonts/RobotoMono-VariableFont_wght.ttf"
 
 [sub_resource type="DynamicFont" id=2]
-size = 24
+size = 22
 font_data = SubResource( 1 )
 
 [resource]

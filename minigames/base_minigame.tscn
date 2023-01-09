@@ -1,17 +1,24 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://minigames/base_minigame.gd" type="Script" id=1]
 [ext_resource path="res://sound/bad_type_sound.ogg" type="AudioStream" id=2]
 [ext_resource path="res://sound/good_type_sound.ogg" type="AudioStream" id=3]
+[ext_resource path="res://assets/metalPanel.png" type="Texture" id=4]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.137255, 0.14902, 0.180392, 1 )
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 4 )
+region_rect = Rect2( 0, 0, 100, 100 )
+margin_left = 12.9943
+margin_right = 17.6873
+margin_top = 18.0105
+margin_bottom = 17.1117
+modulate_color = Color( 0.0470588, 0.152941, 0.160784, 1 )
 
 [node name="base_minigame" type="Panel"]
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.9
 margin_right = -574.0
-margin_bottom = -280.0
+margin_bottom = -285.0
 rect_min_size = Vector2( 280, 200 )
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )

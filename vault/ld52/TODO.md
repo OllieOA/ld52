@@ -1,10 +1,13 @@
 ### Visual
 - [ ] Positive and negative typing shake
+- [x] Add background
+- [x] Add firewall as shader
 - [x] Add offset to network
 - [x] Add wobble/pulse to network
-- [ ] Make better node sprite
+- [x] Make better node sprite
 	- [ ] Make node sprite instead be a control node that can be zoomed in
-- [ ] Make better mover sprite
+- [x] Make better mover sprite
+- [ ] Add colours to completed segments of lines
 
 ### Gameplay
 - [ ] Main menu
@@ -12,7 +15,7 @@
 - [ ] Add firewall proximity meter
 
 ### Audio
-- [ ] Positive and negative typing sounds
+- [x] Positive and negative typing sounds
 - [ ] Music
 
 ### Stretch

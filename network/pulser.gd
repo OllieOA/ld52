@@ -1,6 +1,6 @@
 extends Node
 
-const MAX_DEVIATION = 5.0
+const MAX_DEVIATION = 4.0
 var lerp_time := 1.0
 
 onready var pos_tween = get_node("pos_tween")
