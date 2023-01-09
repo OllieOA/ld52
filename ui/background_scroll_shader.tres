@@ -29,8 +29,8 @@ void fragment( )
 
 [resource]
 shader = SubResource( 1 )
-shader_param/background_color = Color( 0.0196078, 0.415686, 0.588235, 1 )
-shader_param/line_color = Color( 0.027451, 0.482353, 0.639216, 1 )
+shader_param/background_color = Color( 0.027451, 0.313726, 0.439216, 1 )
+shader_param/line_color = Color( 0.0196078, 0.403922, 0.537255, 1 )
 shader_param/line_freq = 9.0
 shader_param/height = 0.4
 shader_param/speed = 0.3

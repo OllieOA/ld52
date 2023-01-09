@@ -6,6 +6,7 @@ public class SiteNetwork : Node2D
 {
 	[Export] public int MaxDepth = 100;
 	[Export] public int MaxWidth = 5;
+	[Export] public int MinWidth = 3;
 	[Export] public PackedScene SiteNodeScene;
 	[Signal] public delegate void Arrived(bool visited, string[] addresses);
 	[Signal] public delegate void Goto(string address);
@@ -15,6 +16,8 @@ public class SiteNetwork : Node2D
 	public List<NetworkLayer> Layers;
 	public Dictionary<int, SiteNode> SiteNodes;
 	public SiteData CurrentSite;
+	private Godot.Object _colorTextUtils;
+	private GDScript _colorTextUtilsPath;
 
 	public override void _Ready()
 	{
@@ -26,13 +29,16 @@ public class SiteNetwork : Node2D
 		this.GetParent().Connect("WebsitePromptFinished", this, "ShowAdjacentNodes");
 
 		Generate();
+
+		_colorTextUtilsPath = (GDScript)GD.Load("res://utils/color_text_utils.gd");
+		_colorTextUtils = (Godot.Object)_colorTextUtilsPath.New();
 	}
 
 	public void Generate()
 	{
 		for (int i = 0; i < MaxDepth; i++)
 		{
-			int count = Randy.Range(2, MaxWidth);
+			int count = Randy.Range(MinWidth, MaxWidth);
 			if (i == 0)
 				count = 1;
 			Layers.Add(new NetworkLayer(i, this).Generate(count));
@@ -152,7 +158,18 @@ public class SiteNetwork : Node2D
 					Vector2 from = site.CalculatePosition();
 					Vector2 to = SiteNodes[otherData.Id].CalculatePosition();
 
-					DrawLine(from, to, Colors.White, 3);
+					Color lineColor;
+
+					if (site.Data.IsVisited & otherData.IsVisited)
+					{
+						lineColor = (Godot.Color)_colorTextUtils.Get("visited_link_color");
+					}
+					else
+					{
+						lineColor = (Godot.Color)_colorTextUtils.Get("unvisited_link_color");
+					}
+
+					DrawLine(from, to, lineColor, 3);
 				}
 			}
 		}
@@ -212,7 +229,7 @@ public class NetworkLayer
 	public void CalculateDisconnectedPaths()
 	{
 		int retryCount = 0;
-		while (FindDisconnected() != null && retryCount++ < 30)
+		while (FindDisconnected() != null && retryCount++ < 1000)
 		{
 			SiteData disconnectedSite = FindDisconnected();
 			SiteData randomSite = GetRandomChild();

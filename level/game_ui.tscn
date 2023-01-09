@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://theme/game_ui_theme.tres" type="Theme" id=1]
 [ext_resource path="res://level/game_ui.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://theme/fonts/minigame_timer_font.tres" type="DynamicFont" id=4]
 [ext_resource path="res://assets/web_entry_block.png" type="Texture" id=5]
 [ext_resource path="res://theme/styles/http_box.tres" type="StyleBox" id=6]
+[ext_resource path="res://assets/progress_noise.png" type="Texture" id=7]
 
 [sub_resource type="StyleBoxEmpty" id=2]
 
@@ -15,6 +16,56 @@ region_rect = Rect2( 0, 0, 20, 30 )
 margin_right = 8.30754
 margin_top = 5.84124
 margin_bottom = 7.00949
+
+[sub_resource type="Animation" id=3]
+resource_name = "shake"
+length = 0.2
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.14, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 493.5, 90 ), Vector2( 487.5, 90 ), Vector2( 492.5, 90 ), Vector2( 489.5, 90 ), Vector2( 490.5, 90 ) ]
+}
+
+[sub_resource type="Shader" id=6]
+code = "shader_type canvas_item;
+
+uniform sampler2D color_gradient;
+uniform sampler2D noiseTexture;
+uniform float speed: hint_range (0.0,5.0);
+uniform float variation: hint_range (0.0,1.0);
+uniform float width: hint_range (0.0,1.0);
+
+void fragment(){
+	
+	vec2 noise_uv = vec2(UV.x+TIME*speed, UV.y-TIME*speed);
+	float noise_sample = texture(noiseTexture, noise_uv).r;
+	float x_offset = noise_sample*variation - variation/2.0;
+	COLOR = texture(color_gradient, vec2((UV.x-0.5)/width + 0.5 + x_offset/width, UV.y));
+}"
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0.00262467, 0.0419948, 0.275591, 0.377953, 0.498688, 0.56168, 0.632546, 0.829396, 0.952756 )
+colors = PoolColorArray( 0, 0, 0, 0, 0.902344, 0.178387, 0.0599213, 1, 0.655087, 0.435653, 0.0933379, 1, 0.758789, 0.139135, 0.112633, 1, 1, 0.726563, 0, 1, 0.811271, 0.464373, 0.0586798, 1, 0.868403, 0.0893968, 0.0560788, 1, 0.960938, 0.664164, 0.0975952, 1, 0.954102, 0.432677, 0.0521774, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+width = 24
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 6 )
+shader_param/speed = 0.2
+shader_param/variation = 0.5
+shader_param/width = 1.0
+shader_param/color_gradient = SubResource( 8 )
+shader_param/noiseTexture = ExtResource( 7 )
 
 [node name="game_ui" type="CanvasLayer"]
 unique_name_in_owner = true
@@ -31,10 +82,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -344.0
-margin_top = -200.0
-margin_right = 6.0
-margin_bottom = -160.0
+margin_left = -360.5
+margin_top = -150.0
+margin_right = -10.5001
+margin_bottom = -110.0
 rect_min_size = Vector2( 0, 40 )
 theme = ExtResource( 3 )
 custom_styles/panel = SubResource( 2 )
@@ -85,38 +136,48 @@ margin_bottom = 13.5
 bbcode_enabled = true
 scroll_active = false
 
-[node name="data_label" type="Label" parent="theme_node"]
+[node name="shake_animator" type="AnimationPlayer" parent="theme_node/website_entry"]
 unique_name_in_owner = true
+anims/shake = SubResource( 3 )
+
+[node name="data_label_panel" type="Panel" parent="theme_node"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -156.0
-margin_top = 10.0
-margin_right = -10.0
-margin_bottom = 23.0
-rect_min_size = Vector2( 150, 20 )
+margin_left = -133.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 128, 50 )
+
+[node name="data_label" type="Label" parent="theme_node/data_label_panel"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+rect_min_size = Vector2( 80, 20 )
 custom_fonts/font = ExtResource( 4 )
-text = "Data: 0,000,000"
 align = 2
 
-[node name="proximity" type="HBoxContainer" parent="theme_node"]
+[node name="firewall_proximity_panel" type="Panel" parent="theme_node"]
 margin_left = 10.0
-margin_top = 10.0
-margin_right = 672.0
-margin_bottom = 30.0
-custom_constants/separation = 10
+margin_top = 5.0
+margin_right = 522.0
+margin_bottom = 21.0
+rect_min_size = Vector2( 512, 24 )
 
-[node name="proximity_warning" type="Label" parent="theme_node/proximity"]
+[node name="firewall_proximity" type="ProgressBar" parent="theme_node/firewall_proximity_panel"]
 unique_name_in_owner = true
-margin_right = 152.0
-margin_bottom = 19.0
-custom_fonts/font = ExtResource( 4 )
-text = "Firewall Proximity:"
-align = 2
-
-[node name="firewall_proximity" type="ProgressBar" parent="theme_node/proximity"]
-unique_name_in_owner = true
-margin_left = 162.0
-margin_right = 662.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 500, 20 )
+material = SubResource( 5 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -15.0
+rect_min_size = Vector2( 504, 16 )
+max_value = 1000.0
+step = 1.0
+value = 1000.0
 percent_visible = false
