@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://level/level.gd" type="Script" id=1]
 [ext_resource path="res://network/SiteNetwork.tscn" type="PackedScene" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://level/website_input_handler.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/scroll_background.png" type="Texture" id=7]
 [ext_resource path="res://ui/background_scroll_shader.tres" type="Material" id=8]
+[ext_resource path="res://sound/complete_sound.ogg" type="AudioStream" id=9]
+[ext_resource path="res://level/game_over_handler.tscn" type="PackedScene" id=10]
 
 [node name="level" type="Node2D"]
 script = ExtResource( 1 )
@@ -30,17 +32,22 @@ unique_name_in_owner = true
 
 [node name="background_layer" type="ParallaxBackground" parent="."]
 layer = -1
-offset = Vector2( -854, -480 )
-transform = Transform2D( 1, 0, 0, 1, -854, -480 )
+scroll_ignore_camera_zoom = true
 
 [node name="background_scroll_controller" type="ParallaxLayer" parent="background_layer"]
-motion_scale = Vector2( 0.5, 1 )
-motion_mirroring = Vector2( 1708, 0 )
+motion_scale = Vector2( 0.5, 0 )
+motion_mirroring = Vector2( 1700, 0 )
 
 [node name="background_scroller" type="Sprite" parent="background_layer/background_scroll_controller"]
 material = ExtResource( 8 )
-rotation = -0.0872665
+rotation = -0.0523599
 texture = ExtResource( 7 )
-centered = false
 region_enabled = true
 region_rect = Rect2( 0, 0, 1708, 960 )
+
+[node name="points_gained_sound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource( 9 )
+bus = "SFX"
+
+[node name="game_over_handler" parent="." instance=ExtResource( 10 )]

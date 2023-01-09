@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://level/firewall.gd" type="Script" id=1]
 [ext_resource path="res://assets/pixel_noise.png" type="Texture" id=2]
+[ext_resource path="res://theme/styles/firewall_gradient.tres" type="Texture" id=3]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -19,20 +20,12 @@ void fragment(){
 	COLOR = texture(color_gradient, vec2((UV.x-0.5)/width + 0.5 - x_offset/width, UV.y));
 }"
 
-[sub_resource type="Gradient" id=3]
-offsets = PoolRealArray( 0.00262467, 0.186352, 0.275591, 0.377953, 0.498688, 0.56168, 0.632546, 0.740157, 1 )
-colors = PoolColorArray( 0, 0, 0, 0, 0.536133, 0.297313, 0.0712051, 1, 0.655087, 0.435653, 0.0933379, 1, 0.758789, 0.139135, 0.112633, 1, 0.749628, 0.412277, 0.061486, 1, 0.811271, 0.464373, 0.0586798, 1, 0.868403, 0.0893968, 0.0560788, 1, 0.954102, 0.46967, 0.0521774, 1, 0.498039, 0.498039, 0.498039, 0 )
-
-[sub_resource type="GradientTexture" id=4]
-gradient = SubResource( 3 )
-width = 24
-
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
 shader_param/speed = 0.2
-shader_param/variation = 0.563
+shader_param/variation = 0.5
 shader_param/width = 0.7
-shader_param/color_gradient = SubResource( 4 )
+shader_param/color_gradient = ExtResource( 3 )
 shader_param/noiseTexture = ExtResource( 2 )
 
 [node name="firewall" type="Node2D"]

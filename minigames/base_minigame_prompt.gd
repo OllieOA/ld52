@@ -10,6 +10,7 @@ onready var start_minigame_button = get_node("%start_minigame_button")
 onready var minigame_container = get_node("%minigame_container")
 onready var data_timer_slider = get_node("%data_timer")
 onready var data_available_label = get_node("%data_available")
+onready var shake_animator = get_node("%shake_animator")
 
 onready var hover_stylebox: StyleBoxTexture = preload("res://theme/styles/button_hover.tres")
 onready var normal_stylebox: StyleBoxTexture = preload("res://theme/styles/button_normal.tres")
@@ -66,6 +67,8 @@ func _ready() -> void:
 	loop_timer.connect("timeout", self, "_decay_time")
 	add_child(loop_timer)
 
+	var _na = SignalBus.connect("game_over", self, "queue_free")
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("start_minigame"):
@@ -79,6 +82,7 @@ func _start_minigame() -> void:
 	minigame_container.add_child(loaded_minigame)
 
 	var _na = loaded_minigame.connect("minigame_complete", self, "_end_minigame")
+	_na = loaded_minigame.connect("bad_key", self, "_handle_bad_key")
 	
 	loaded_minigame.start_minigame()
 	minigame_started = true
@@ -96,3 +100,6 @@ func _decay_time():
 	data_timer_slider.value = data_timer_slider.value - decay_score
 	data_available_label.text = str(data_timer_slider.value)
 	
+
+func _handle_bad_key():
+	shake_animator.play("shake")
