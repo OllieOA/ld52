@@ -31,6 +31,7 @@ var _target_best_run_visited := 0
 func _ready() -> void:
 	rng.randomize()
 	level_reference = get_parent()
+	var _na = game_over_player.connect("animation_finished", self, "_handle_animation_finished")
 
 
 func _process(delta: float) -> void:
@@ -117,3 +118,7 @@ func run_score_tween() -> void:
 		)
 	
 	number_tween.start()
+
+
+func _handle_animation_finished(_anim_name: String) -> void:
+	game_over_player.stop()

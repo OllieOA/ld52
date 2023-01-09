@@ -17,7 +17,7 @@ func _process(_delta: float) -> void:
 		global_position.x = lerp(global_position.x, mover_node.global_position.x + x_offset, lerp_speed)
 
 	else:
-		global_position.x = lerp(global_position.x, 0, 0.0005)
+		global_position.x = lerp(global_position.x, 0, 0.001)
 
 func sharp_goto_position(set_position: Vector2) -> void:
 	global_position = set_position
